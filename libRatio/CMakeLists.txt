@@ -13,6 +13,10 @@ message(STATUS "myCode cmake part ..." )
 add_subdirectory(myCode)
 
 # add myTest
-//
-message(STATUS "myTest cmake part ..." )
-add_subdirectory(myTest)
+find_package(GTest OPTIONAL_COMPONENTS)
+if(GTEST_FOUND)
+	message(STATUS "myTest cmake part ..." )
+	add_subdirectory(myTest)
+elseif()
+	message(WARNING "google test not found, skipping myTest ..." )
+endif()

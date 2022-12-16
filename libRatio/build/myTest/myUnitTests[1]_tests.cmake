@@ -1,0 +1,1 @@
+set( myUnitTests_TESTS)
