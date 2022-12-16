@@ -1,2 +1,2 @@
 # libRationel
-Allright !
+by Charline Le Pape & Juliette Jeannin
