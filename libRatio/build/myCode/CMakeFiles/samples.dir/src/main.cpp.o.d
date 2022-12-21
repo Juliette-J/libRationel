@@ -1,6 +1,8 @@
 myCode/CMakeFiles/samples.dir/src/main.cpp.o: \
  /home/juliettej/Documents/libRationel/libRatio/myCode/src/main.cpp \
- /usr/include/stdc-predef.h /usr/include/c++/12/iostream \
+ /usr/include/stdc-predef.h \
+ /home/juliettej/Documents/libRationel/libRatio/myLib/include/Rational.hpp \
+ /usr/include/c++/12/iostream \
  /usr/include/c++/12/x86_64-redhat-linux/bits/c++config.h \
  /usr/include/bits/wordsize.h \
  /usr/include/c++/12/x86_64-redhat-linux/bits/os_defines.h \

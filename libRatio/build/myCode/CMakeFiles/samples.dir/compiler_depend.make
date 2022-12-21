@@ -3,6 +3,7 @@
 
 myCode/CMakeFiles/samples.dir/src/main.cpp.o: ../myCode/src/main.cpp \
   /usr/include/stdc-predef.h \
+  ../myLib/include/Rational.hpp \
   /usr/include/c++/12/iostream \
   /usr/include/c++/12/x86_64-redhat-linux/bits/c++config.h \
   /usr/include/bits/wordsize.h \
@@ -250,17 +251,7 @@ myCode/CMakeFiles/samples.dir/src/main.cpp.o: ../myCode/src/main.cpp \
 
 /usr/include/c++/12/bits/alloc_traits.h:
 
-/usr/include/bits/types/__fpos64_t.h:
-
-/usr/include/c++/12/clocale:
-
-/usr/include/errno.h:
-
-/usr/include/c++/12/x86_64-redhat-linux/bits/c++config.h:
-
-/usr/include/c++/12/bits/cxxabi_init_exception.h:
-
-/usr/include/c++/12/backward/binders.h:
+/usr/include/c++/12/ext/alloc_traits.h:
 
 /usr/include/c++/12/x86_64-redhat-linux/bits/c++locale.h:
 
@@ -318,6 +309,12 @@ myCode/CMakeFiles/samples.dir/src/main.cpp.o: ../myCode/src/main.cpp \
 
 /usr/include/locale.h:
 
+/usr/include/bits/cpu-set.h:
+
+/usr/include/c++/12/typeinfo:
+
+/usr/include/bits/long-double.h:
+
 /usr/include/c++/12/x86_64-redhat-linux/bits/cpu_defines.h:
 
 /usr/include/bits/types/FILE.h:
@@ -333,8 +330,6 @@ myCode/CMakeFiles/samples.dir/src/main.cpp.o: ../myCode/src/main.cpp \
 /usr/include/c++/12/exception:
 
 /usr/lib/gcc/x86_64-redhat-linux/12/include/stddef.h:
-
-/usr/include/bits/long-double.h:
 
 /usr/include/bits/stdint-intn.h:
 
@@ -352,8 +347,6 @@ myCode/CMakeFiles/samples.dir/src/main.cpp.o: ../myCode/src/main.cpp \
 
 /usr/include/bits/pthread_stack_min-dynamic.h:
 
-/usr/include/c++/12/ext/alloc_traits.h:
-
 /usr/include/bits/waitstatus.h:
 
 /usr/include/bits/timesize.h:
@@ -365,6 +358,18 @@ myCode/CMakeFiles/samples.dir/src/main.cpp.o: ../myCode/src/main.cpp \
 /usr/include/gnu/stubs.h:
 
 /usr/include/bits/pthreadtypes-arch.h:
+
+/usr/include/errno.h:
+
+/usr/include/c++/12/x86_64-redhat-linux/bits/c++config.h:
+
+/usr/include/c++/12/bits/cxxabi_init_exception.h:
+
+/usr/include/bits/types/__fpos64_t.h:
+
+/usr/include/c++/12/clocale:
+
+/usr/include/c++/12/backward/binders.h:
 
 /usr/include/c++/12/cstdint:
 
@@ -385,6 +390,8 @@ myCode/CMakeFiles/samples.dir/src/main.cpp.o: ../myCode/src/main.cpp \
 /usr/include/c++/12/bits/move.h:
 
 /usr/include/c++/12/iosfwd:
+
+../myLib/include/Rational.hpp:
 
 /usr/include/c++/12/bits/stringfwd.h:
 
@@ -427,10 +434,6 @@ myCode/CMakeFiles/samples.dir/src/main.cpp.o: ../myCode/src/main.cpp \
 /usr/include/bits/libc-header-start.h:
 
 /usr/lib/gcc/x86_64-redhat-linux/12/include/stdarg.h:
-
-/usr/include/bits/cpu-set.h:
-
-/usr/include/c++/12/typeinfo:
 
 /usr/include/bits/locale.h:
 
