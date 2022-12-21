@@ -1,7 +1,6 @@
 #ifndef RATIONNELS_HPP
 #define RATIONNELS_HPP
 
-
 class Rational {
     private :
         int numerator;

@@ -26,8 +26,8 @@ Rational::Rational(const int &a, const int &b) {
 /* Operators */ 
 
 Rational Rational::operator+(const Rational &ratio) {
-	int numerator = this->numerator + ratio.getNumerator();
-    int denominator = this->numerator + ratio.getDenominator();
+	int numerator = this->numerator*ratio.getDenominator() + this->denominator*ratio.getNumerator();
+    int denominator = this->denominator*ratio.getDenominator();
 	return Rational(numerator, denominator);
 }
 
