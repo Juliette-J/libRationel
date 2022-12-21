@@ -11,7 +11,9 @@
 
 Rational::Rational(const int &a, const int &b) {
     // 0 exception
-    assert(b != 0); 
+    if(b == 0) {
+        std::cout << "It's impossible to divide by 0 ! " << std::endl;
+    }
 
     // make it irreductible
     if(std::abs(std::gcd(a,b)) != 1) {
@@ -23,10 +25,10 @@ Rational::Rational(const int &a, const int &b) {
     if(b < 0) {
         numerator = -a;
         denominator = -b;
-    }
+    } 
     else {
         numerator = a;
-        numerator = b;
+        denominator = b;
     }
 };
 

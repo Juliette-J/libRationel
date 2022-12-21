@@ -1,0 +1,5 @@
+if(EXISTS "/home/juliettej/Documents/libRationel/libRatio/build/myTest/myUnitTests[1]_tests.cmake")
+  include("/home/juliettej/Documents/libRationel/libRatio/build/myTest/myUnitTests[1]_tests.cmake")
+else()
+  add_test(myUnitTests_NOT_BUILT myUnitTests_NOT_BUILT)
+endif()
