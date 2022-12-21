@@ -22,14 +22,19 @@ class Rational {
         // Destructor
         ~Rational() = default;
 
+        // Operators
+        Rational operator+(const Rational &ratio);
+        
+        // Operations
+        Rational pow(const Rational &ratio, const int &power);
+
         // Methods
         int getNumerator() const {return numerator; }; // get the numerator of the rational
         int getDenominator() const {return denominator; }; // get the denominator of the rational
         Rational floatToRatio(const float &x, unsigned int nbIter);
-        Rational pow(const Rational &ratio, const int &power);
+        
 
-        // Operators
-        Rational operator+(const Rational &ratio);
+        
 
 };
 
