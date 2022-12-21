@@ -1,1 +1,0 @@
-set( myUnitTests_TESTS)
