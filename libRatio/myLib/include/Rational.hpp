@@ -1,3 +1,5 @@
+#include <iostream>
+
 #ifndef RATIONNELS_HPP
 #define RATIONNELS_HPP
 
@@ -19,19 +21,29 @@ class Rational {
 
         // Operators
         Rational operator+(const Rational &ratio);
+        Rational operator-(const Rational &ratio);
+
         Rational operator*(const Rational &ratio);
+        Rational operator/(const Rational &ratio);
         
+        // inverse the rational
+        Rational InvRatio();
+
 
         // Methods
         int getNumerator() const {return numerator; }; // get the numerator of the rational
         int getDenominator() const {return denominator; }; // get the denominator of the rational
         Rational floatToRatio(const float &x, unsigned int nbIter);
+
+      
         
 };
 
 // Operations
 Rational power(const Rational &ratio, const int &power);
 
+
+std::ostream& operator<< (std::ostream& stream, const Rational &ratio);
 
 /*
 template<typename T>

@@ -7,6 +7,7 @@
 #include <cassert>
 
 
+
 /* Constructors */
 
 Rational::Rational(const int &a, const int &b) {
@@ -39,7 +40,7 @@ Rational::Rational(const int &a, const int &b) {
         numerator = a;
         denominator = b;
     }
-};
+}
 
 
 /* Operators */ 
@@ -50,10 +51,24 @@ Rational Rational::operator+(const Rational &ratio) {
 	return Rational(numerator, denominator);
 }
 
+Rational Rational::operator-(const Rational &ratio) {
+	int numerator = this->numerator*ratio.getDenominator() - this->denominator*ratio.getNumerator();
+    int denominator = this->denominator*ratio.getDenominator();
+	return Rational(numerator, denominator);
+}
+
 Rational Rational::operator*(const Rational &ratio) {
 	int numerator = this->numerator*ratio.getNumerator();
     int denominator = this->denominator*ratio.getDenominator();
 	return Rational(numerator, denominator);
+}
+
+Rational Rational::operator/(const Rational &ratio) {
+   return Rational(this->numerator*ratio.getDenominator(), this->denominator*ratio.getNumerator());
+}
+
+Rational Rational::InvRatio(){
+	return Rational(this->getDenominator(), this->getNumerator());
 }
 
 
@@ -85,4 +100,17 @@ Rational power(const Rational &ratio, const int &power) {
     int pow_numerator = std::pow(ratio.getNumerator(), power);
     int pow_denominator = std::pow(ratio.getDenominator(), power);
     return Rational(pow_numerator, pow_denominator);
+}
+
+
+
+std::ostream& operator<< (std::ostream& stream, const Rational &ratio) {
+	if(ratio.getNumerator() == 0 && ratio.getDenominator() ==0){
+		stream << "Not initialized yet -> 0/0 IMPOSSIBLE";
+		return stream;
+	}
+			
+	stream << ratio.getNumerator() << "/" << ratio.getDenominator() ;
+
+	return stream;
 }
