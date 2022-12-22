@@ -24,6 +24,26 @@ int main() {
     std::cout << "rat1*rat2 : " <<  rat1 * rat2 << std::endl;
     std::cout << "rat1/rat2 : " <<  rat1 / rat2 << std::endl;
 
+    Rational rat5 = rat1 / rat2 ;
+    std::cout << "rat1/rat2 irreductible : " <<  rat5.irreductible() << std::endl;
+    rat5 = rat5.irreductible();
+     std::cout << "rat1/rat2 squareroot nul : " <<  rat5.squareroot() << std::endl;
+    //std::cout << "rat1/rat2 carre : " <<  rat5.sqrt() << std::endl;
+
+    Rational rat = rat1 - rat2 ;
+    rat.irreductible();
+    std::cout << rat << std::endl;
+    std::cout << "rat1-rat2 test squareroot nul : " << rat.squareroot() << std::endl;
+    Rational rat7(6,7);
+    std::cout << "squareroot de : "<< rat7 << " = " << rat.squareroot() << std::endl;
+    
+    Rational rat8(6,-7);
+    std::cout << "absolute de : "<< rat8 << " = " << rat8.absolute() << std::endl;
+
+
+    Rational rati(1,-3);
+    std::cout << rati << std::endl;
+    std::cout << "moins unaire : qui ne marche pas" << -rati << std::endl;
 
 
     return 0;

@@ -144,7 +144,6 @@ TEST (RatioArithmetic, inverse) {
 	}
 }
 
-
 TEST (RatioArithmetic, power) {
 
 	// Seed
