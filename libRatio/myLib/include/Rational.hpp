@@ -45,7 +45,7 @@ class Rational {
         Rational absolute();
 
         // entier
-        Rational entier();
+        int entier();
 
         // Methods
         int getNumerator() const {return numerator; }; // get the numerator of the rational
@@ -88,5 +88,7 @@ class Rational {
 
 };
 */
+
+
 
 #endif

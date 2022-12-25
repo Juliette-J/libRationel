@@ -35,7 +35,7 @@ int main() {
     std::cout << rat << std::endl;
     std::cout << "rat1-rat2 test squareroot nul : " << rat.squareroot() << std::endl;
     Rational rat7(6,7);
-    std::cout << "squareroot de : "<< rat7 << " = " << rat.squareroot() << std::endl;
+    std::cout << "squareroot de : "<< rat7 << " = " << rat7.squareroot() << std::endl;
     
     Rational rat8(6,-7);
     std::cout << "absolute de : "<< rat8 << " = " << rat8.absolute() << std::endl;
@@ -43,7 +43,13 @@ int main() {
 
     Rational rati(1,-3);
     std::cout << rati << std::endl;
-    std::cout << "moins unaire : qui ne marche pas" << -rati << std::endl;
+    std::cout << "moins unaire : " << -rati << std::endl;
+
+    Rational rati2(7,3);
+    std::cout << rati2 << std::endl;
+    std::cout << "moins unaire : " << -rati2 << std::endl;
+
+    std::cout << "Entier : " << rati2.entier() << std::endl;
 
 
     return 0;

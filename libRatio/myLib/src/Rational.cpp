@@ -57,9 +57,8 @@ Rational Rational::operator-(const Rational &ratio) {
 	return Rational(numerator, denominator);
 }
 
-/*Moins unaire qui ne fontionne pas aie aie */
 Rational Rational::operator-() {
-	return Rational(-this->denominator, this->denominator);
+	return Rational(-this->numerator, this->denominator);
 }
 
 
@@ -76,6 +75,29 @@ Rational Rational::operator/(const Rational &ratio) {
 Rational Rational::InvRatio(){
 	return Rational(this->getDenominator(), this->getNumerator());
 }
+
+int Rational::entier(){
+    int res =0;
+    int a = abs(this->getNumerator());
+    if (this->getDenominator() > a){
+        return 0;
+    }
+    else if (this->getDenominator() == a){
+        return 1;
+    }
+    else {
+        int e = a;
+        while(e>this->getDenominator()){
+            e=e-this->getDenominator();
+            res +=1;
+        }
+    }
+    if(a!=this->getNumerator()){
+        res =-res;
+    }
+    return res;
+}
+
 
 Rational Rational::irreductible(){
 
@@ -98,10 +120,25 @@ Rational Rational::squareroot(){
         std::cout << "No square root for negative number !" << std::endl;
         return 0;
     }
-    a = std::sqrt(a);
-    b=std::sqrt(b);
-    /*probleme de conversion car sqrt peut renvoyer float*/
-    return Rational(a,b);
+
+    float e = std::sqrt(a);
+    while (e >= 1){
+        e = e-1;
+    }
+    float f = std::sqrt(b);
+    while (f >= 1){
+        f = f-1;
+    }
+
+    if (e==0 && f==0){
+        a = std::sqrt(a);
+        b=std::sqrt(b);
+        return Rational(a,b);
+    }
+
+    /*probleme de conversion car sqrt peut renvoyer floattoRatio*/
+    std::cout << "The square root is not a rational number !" << std::endl;
+    return 0;
 }
 
 Rational Rational::absolute(){
@@ -146,8 +183,13 @@ std::ostream& operator<< (std::ostream& stream, const Rational &ratio) {
 		stream << "Not initialized yet -> 0/0 IMPOSSIBLE";
 		return stream;
 	}
+    else if(ratio.getDenominator()==1){
+        stream << ratio.getNumerator();
+    }
 			
-	stream << ratio.getNumerator() << "/" << ratio.getDenominator() ;
+	else {
+        stream << ratio.getNumerator() << "/" << ratio.getDenominator() ;
+    }
 
 	return stream;
 }
