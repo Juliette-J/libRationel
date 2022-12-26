@@ -72,6 +72,19 @@ Rational Rational::operator/(const Rational &ratio) {
    return Rational(this->numerator*ratio.getDenominator(), this->denominator*ratio.getNumerator());
 }
 
+bool Rational::operator>=(const Rational &ratio) {
+    int deno1 = ratio.getDenominator();
+    int deno2 = this->getDenominator();
+    int nume1 = ratio.getNumerator();
+    int nume2 = this->getNumerator();
+    nume1 = nume1 * deno2;
+    nume2 = nume2 * deno1;
+    if (nume2 >= nume1) {
+        return true;
+    }
+    return false;
+}
+
 Rational Rational::InvRatio(){
 	return Rational(this->getDenominator(), this->getNumerator());
 }
@@ -166,6 +179,8 @@ Rational floatToRatio(const float &x, unsigned int nbIter) {
         return Rational(int_part, 1) + floatToRatio(x-int_part, nbIter-1);
     }
 }
+
+
 
 
 /* Operations */

@@ -51,6 +51,15 @@ int main() {
 
     std::cout << "Entier : " << rati2.entier() << std::endl;
 
+    Rational rati3(2,3);
+    Rational rati4(-4,5);
+    if (rati4>=rati3){
+        std::cout << rati4 << " superieur a " << rati3 << std::endl;
+    }
+    else {
+        std::cout << rati4 << " inferieur a " << rati3 << std::endl;
+    }
+  
 
     return 0;
 }
