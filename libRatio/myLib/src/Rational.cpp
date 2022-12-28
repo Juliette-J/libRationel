@@ -35,6 +35,7 @@ Rational::Rational(const int &a, const int &b) {
         numerator = a;
         denominator = b;
     }
+<<<<<<< HEAD
      std::cout << "PGCD :"  << std::gcd(a,b) << std::endl; 
     // make it irreductible
     if(std::abs(std::gcd(a,b)) != 1) {
@@ -43,6 +44,8 @@ Rational::Rational(const int &a, const int &b) {
     }
 
     
+=======
+>>>>>>> a39190735e273b367f09577d8e009697735dc244
 }
 
 
@@ -75,6 +78,7 @@ Rational Rational::operator/(const Rational &ratio) {
    return Rational(this->numerator*ratio.getDenominator(), this->denominator*ratio.getNumerator());
 }
 
+<<<<<<< HEAD
 bool Rational::operator==(const Rational &ratio) {
     int numerator_1 = this->getNumerator();
     int numerator_2 = ratio.getNumerator();
@@ -86,6 +90,8 @@ bool Rational::operator==(const Rational &ratio) {
     return false;
 }
 
+=======
+>>>>>>> a39190735e273b367f09577d8e009697735dc244
 bool Rational::operator>=(const Rational &ratio) {
     int deno1 = ratio.getDenominator();
     int deno2 = this->getDenominator();

@@ -23,7 +23,10 @@ class Rational {
         Rational operator+(const Rational &ratio);
         Rational operator-(const Rational &ratio);
         bool operator>=(const Rational &ratio);
+<<<<<<< HEAD
         bool operator==(const Rational &ratio);
+=======
+>>>>>>> a39190735e273b367f09577d8e009697735dc244
 
         //ne fonctionne pas
         Rational operator-();
@@ -53,6 +56,10 @@ class Rational {
         int getNumerator() const {return numerator; }; // get the numerator of the rational
         int getDenominator() const {return denominator; }; // get the denominator of the rational
         Rational floatToRatio(const float &x, unsigned int nbIter);
+
+
+        
+      
         
         
 };
