@@ -23,10 +23,8 @@ class Rational {
         Rational operator+(const Rational &ratio);
         Rational operator-(const Rational &ratio);
         bool operator>=(const Rational &ratio);
-<<<<<<< HEAD
         bool operator==(const Rational &ratio);
-=======
->>>>>>> a39190735e273b367f09577d8e009697735dc244
+        bool operator!=(const Rational &ratio);
 
         //ne fonctionne pas
         Rational operator-();
