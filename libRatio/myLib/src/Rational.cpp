@@ -7,8 +7,7 @@
 #include <cassert>
 
 
-
-/* Constructors */
+/* ---------------- Constructors ---------------- */
 
 Rational::Rational(const int &a, const int &b) {
     // 0 exception
@@ -37,14 +36,11 @@ Rational::Rational(const int &a, const int &b) {
     }
     
     // make it irreductible
-    if(std::abs(std::gcd(a,b)) != 1) {
-        numerator /= std::abs(std::gcd(a,b));
-        denominator /= b/std::abs(std::gcd(a,b));
-    }
+    this->makeIrreductible();
 }
 
 
-/* Operators */ 
+/* ---------------- Operators ---------------- */
 
 Rational Rational::operator+(const Rational &ratio) {
 	int numerator = this->numerator*ratio.getDenominator() + this->denominator*ratio.getNumerator();
@@ -64,29 +60,24 @@ Rational Rational::operator-() {
 
 
 Rational Rational::operator*(const Rational &ratio) {
-	int numerator = this->numerator*ratio.getNumerator();
-    int denominator = this->denominator*ratio.getDenominator();
-	return Rational(numerator, denominator);
+	return Rational(this->numerator*ratio.getNumerator(), this->denominator*ratio.getDenominator());
 }
 
 Rational Rational::operator/(const Rational &ratio) {
    return Rational(this->numerator*ratio.getDenominator(), this->denominator*ratio.getNumerator());
 }
 
+
 bool Rational::operator==(const Rational &ratio) {
-    int numerator_1 = this->getNumerator();
-    int numerator_2 = ratio.getNumerator();
-    int denominator_1 = this->getDenominator();
-    int denominator_2 = ratio.getDenominator();
-    if (numerator_1 == numerator_2 && denominator_1 == denominator_2) {
+    if (this->getNumerator() == ratio.getNumerator() && this->getDenominator() == ratio.getDenominator()) {
         return true;
     }
     return false;
 }
 
-/*bool Rational::operator!=(const Rational &ratio) {
-    return !Rational::operator==;
-}*/
+bool Rational::operator!=(const Rational &ratio) {
+    return !(*this == ratio);
+}
 
 
 bool Rational::operator>=(const Rational &ratio) {
@@ -111,52 +102,21 @@ bool Rational::operator<=(const Rational &ratio) {
     return !(*this<ratio && *this==ratio);
 }
 
-
 bool Rational::operator>(const Rational &ratio) {
     return !(*this <= ratio);
 }
 
-Rational Rational::InvRatio(){
+
+/* ---------------- Methods ---------------- */
+
+/* ----- Arithmetics ----- */
+
+Rational Rational::invRatio(){
 	return Rational(this->getDenominator(), this->getNumerator());
 }
 
-int Rational::entier(){
-    int res =0;
-    int a = abs(this->getNumerator());
-    if (this->getDenominator() > a){
-        return 0;
-    }
-    else if (this->getDenominator() == a){
-        return 1;
-    }
-    else {
-        int e = a;
-        while(e>this->getDenominator()){
-            e=e-this->getDenominator();
-            res +=1;
-        }
-    }
-    if(a!=this->getNumerator()){
-        res =-res;
-    }
-    return res;
-}
-
-
-Rational Rational::irreductible(){
-
-    int a = this->getNumerator();
-    int b = this-> getDenominator();
-
-    if(std::abs(std::gcd(a,b)) != 1) {
-        a /= std::abs(std::gcd(a,b));
-        b /= std::abs(std::gcd(a,b));
-    }
-    return Rational(a,b);
-}
-
 /*pas fini je reflechis encore dessus... parce que sqrt de 3 ca va etre complique*/
-Rational Rational::squareroot(){
+Rational Rational::squareRoot(){
     int a = this->getNumerator();
     int b = this-> getDenominator();
     if (a<0){
@@ -188,7 +148,40 @@ Rational Rational::absolute(){
     return Rational(std::abs(this->numerator), this->denominator);
 }
 
-/* Methods*/
+/* ----- Manipulations ----- */
+
+int Rational::integerPart(){
+    int res = 0;
+    int a = abs(this->getNumerator());
+    if (this->getDenominator() > a){
+        return 0;
+    }
+    else if (this->getDenominator() == a){
+        return 1;
+    }
+    else {
+        int e = a;
+        while(e > this->getDenominator()){
+            e = e-this->getDenominator();
+            res += 1;
+        }
+    }
+    if(a != this->getNumerator()){
+        res = -res;
+    }
+    return res;
+}
+
+Rational Rational::makeIrreductible(){
+    int numerator = this->getNumerator();
+    int denominator = this-> getDenominator();
+
+    if(std::abs(std::gcd(numerator, denominator)) != 1) {
+        numerator /= std::abs(std::gcd(numerator, denominator));
+        denominator /= std::abs(std::gcd(numerator, denominator));
+    }
+    return Rational(numerator, denominator);
+}
 
 Rational floatToRatio(const float &x, unsigned int nbIter) {
     // keep the sign of x
@@ -209,8 +202,6 @@ Rational floatToRatio(const float &x, unsigned int nbIter) {
         return Rational(int_part, 1) + floatToRatio(x-int_part, nbIter-1);
     }
 }
-
-
 
 
 /* Operations */

@@ -9,17 +9,20 @@ class Rational {
         int denominator;
 
     public :
-        // Constructors
+        /* ---------------- Constructors ---------------- */ 
+
         Rational(const int &a = 1, const int &b = 1);
         Rational(const float &a = 1, const float &b = 1);
-
         Rational(const Rational &r) = default; // by copy
 
-        // Destructor
+
+        /* ---------------- Destructor ---------------- */
+
         ~Rational() = default;
 
 
-        // Operators
+        /* ---------------- Operators ---------------- */
+
         Rational operator+(const Rational &ratio);
         Rational operator-(const Rational &ratio);
 
@@ -35,40 +38,38 @@ class Rational {
 
         Rational operator*(const Rational &ratio);
         Rational operator/(const Rational &ratio);
+
         
-        // inverse the rational
-        Rational InvRatio();
+        /* ---------------- Methods ---------------- */
 
-        // make it irreductible
-        Rational irreductible();
+        /* ----- Getter/Setter ----- */
 
-        // square root pas complet jsp comment mieux faire
-        Rational squareroot();
-
-        // log
-        Rational log();
-
-        // absolute value
-        Rational absolute();
-
-        // entier
-        int entier();
-
-        // Methods
         int getNumerator() const {return numerator; }; // get the numerator of the rational
         int getDenominator() const {return denominator; }; // get the denominator of the rational
-        Rational floatToRatio(const float &x, unsigned int nbIter);
+        
 
+        /* ----- Arithmetics ----- */
 
+        Rational invRatio(); // invert the rational ATTENTION -> DENOMINATEUR PEUT DEVENIR NEGATIF
+
+        // square root pas complet jsp comment mieux faire
+        Rational squareRoot();
+
+        Rational log(); // logarithm
+        Rational absolute(); // absolute value
         
-      
-        
-        
+
+        /* ----- Manipulations ----- */
+
+        int integerPart(); // integer part
+        Rational makeIrreductible(); // make a rational irreductible
+        Rational floatToRatio(const float &x, unsigned int nbIter); // conversion float to rational
+
 };
 
-// Operations
-Rational power(const Rational &ratio, const int &power);
+/* Methods outside Rational class */
 
+Rational power(const Rational &ratio, const int &power);
 
 std::ostream& operator<< (std::ostream& stream, const Rational &ratio);
 
