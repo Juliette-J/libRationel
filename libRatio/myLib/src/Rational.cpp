@@ -204,14 +204,13 @@ Rational floatToRatio(const float &x, unsigned int nbIter) {
 }
 
 
-/* Operations */
+/* Methods outside Rational class */
 
 Rational power(const Rational &ratio, const int &power) {
     int pow_numerator = std::pow(ratio.getNumerator(), power);
     int pow_denominator = std::pow(ratio.getDenominator(), power);
     return Rational(pow_numerator, pow_denominator);
 }
-
 
 
 std::ostream& operator<< (std::ostream& stream, const Rational &ratio) {

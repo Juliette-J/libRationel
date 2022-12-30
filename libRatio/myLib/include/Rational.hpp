@@ -67,7 +67,7 @@ class Rational {
 
 };
 
-/* Methods outside Rational class */
+/* ------- Methods outside Rational class ------- */
 
 Rational power(const Rational &ratio, const int &power);
 

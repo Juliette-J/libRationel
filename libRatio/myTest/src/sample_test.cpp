@@ -7,16 +7,7 @@
 #include <functional>
 #include <gtest/gtest.h>
 
-/* Constructors */
-
-/*
-TEST (RatioConstructor, defaultConstructor) { 
-	Rational ratio();
-	ASSERT_EQ(ratio.getNumerator(), 1);
-}
-*/
-
-/* Arithmetic */
+/* Operators */
 
 TEST (RatioArithmetic, plus) {
 
@@ -42,9 +33,7 @@ TEST (RatioArithmetic, plus) {
 	}
 }
 
-/*Test pour la soustraction*/
-
-TEST (RatioArithmetic, substract) {
+TEST (RatioArithmetic, minus) {
 
 	// Seed
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -93,8 +82,6 @@ TEST (RatioArithmetic, product) {
 	}
 }
 
-
-/*Test pour la division*/
 TEST (RatioArithmetic, division) {
 
 	// Seed
@@ -119,7 +106,58 @@ TEST (RatioArithmetic, division) {
 	}
 }
 
-/*Test pour l'inverse*/
+/* Operators */
+
+TEST (RatioArithmetic, similarity) {
+
+	// Seed
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+	// Generator
+	std::mt19937 generator(seed);
+
+	// Distribution
+	std::uniform_int_distribution<int> uniformIntDistribution(-50,50);
+	auto gen = std::bind(uniformIntDistribution, generator);
+
+	// run many times the same test with different values
+	for(int run=0; run<100; ++run){
+
+		// generate random data
+		Rational ratio1(gen(), gen());
+		Rational ratio2(ratio1);
+
+	    ASSERT_EQ(ratio1==ratio2, true);
+	}
+}
+
+TEST (RatioArithmetic, difference) {
+
+	// Seed
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+	// Generator
+	std::mt19937 generator(seed);
+
+	// Distribution
+	std::uniform_int_distribution<int> uniformIntDistribution(-50,50);
+	auto gen = std::bind(uniformIntDistribution, generator);
+
+	// run many times the same test with different values
+	for(int run=0; run<100; ++run){
+
+		// generate random data
+		Rational ratio1(gen(), gen());
+		Rational ratio2(gen(), gen());
+
+	    ASSERT_EQ(ratio1!=ratio2, true);
+	}
+}
+
+/* ---------------- Methods ---------------- */
+
+/* ----- Arithmetics ----- */
+
 TEST (RatioArithmetic, inverse) {
 
 	// Seed
@@ -143,6 +181,8 @@ TEST (RatioArithmetic, inverse) {
         ASSERT_EQ(ratio2.getDenominator(), ratio1.getDenominator());
 	}
 }
+
+/* ------- Methods outside Rational class ------- */
 
 TEST (RatioArithmetic, power) {
 
