@@ -22,7 +22,11 @@ class Rational {
         // Operators
         Rational operator+(const Rational &ratio);
         Rational operator-(const Rational &ratio);
+
         bool operator>=(const Rational &ratio);
+        bool operator<=(const Rational &ratio);
+        bool operator<(const Rational &ratio);
+        bool operator>(const Rational &ratio);
         bool operator==(const Rational &ratio);
         bool operator!=(const Rational &ratio);
 

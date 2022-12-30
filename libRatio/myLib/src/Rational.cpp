@@ -84,9 +84,10 @@ bool Rational::operator==(const Rational &ratio) {
     return false;
 }
 
-bool Rational::operator!=(const Rational &ratio) {
+/*bool Rational::operator!=(const Rational &ratio) {
     return !Rational::operator==;
-}
+}*/
+
 
 bool Rational::operator>=(const Rational &ratio) {
     int deno1 = ratio.getDenominator();
@@ -99,6 +100,20 @@ bool Rational::operator>=(const Rational &ratio) {
         return true;
     }
     return false;
+}
+
+bool Rational::operator<(const Rational &ratio) {
+    return !(*this >= ratio);
+}
+
+bool Rational::operator<=(const Rational &ratio) {
+    
+    return !(*this<ratio && *this==ratio);
+}
+
+
+bool Rational::operator>(const Rational &ratio) {
+    return !(*this <= ratio);
 }
 
 Rational Rational::InvRatio(){

@@ -59,7 +59,28 @@ int main() {
     else {
         std::cout << rati4 << " inferieur a " << rati3 << std::endl;
     }
+
+    if (rati4<rati3){
+        std::cout << rati4 << " inferieur a " << rati3 << std::endl;
+    }
+    else {
+        std::cout << rati4 << " superieur a " << rati3 << std::endl;
+    }
   
+    if (rati4>rati3){
+        std::cout << rati4 << " sup a " << rati3 << std::endl;
+    }
+    else {
+        std::cout << rati4 << " inf a " << rati3 << std::endl;
+    }
+
+
+    if (rati4<=rati3){
+        std::cout << rati4 << " inf a " << rati3 << std::endl;
+    }
+    else {
+        std::cout << rati4 << " sup a " << rati3 << std::endl;
+    }
 
     return 0;
 }
