@@ -27,9 +27,10 @@ TEST (RatioArithmetic, plus) {
 		// generate random data
 		Rational ratio1(gen(), gen()), ratio2(gen(), gen());
 		Rational ratio3(ratio1 + ratio2);
+		Rational ratio4(ratio1.getNumerator()*ratio2.getDenominator() + ratio1.getDenominator()*ratio2.getNumerator(), ratio1.getDenominator()*ratio2.getDenominator());
 
-	    ASSERT_EQ(ratio3.getNumerator(), ratio1.getNumerator()*ratio2.getDenominator() + ratio1.getDenominator()*ratio2.getNumerator());
-        ASSERT_EQ(ratio3.getDenominator(), ratio1.getDenominator()*ratio2.getDenominator());
+	    ASSERT_EQ(ratio3.getNumerator(), ratio4.getNumerator());
+		ASSERT_EQ(ratio3.getDenominator(), ratio4.getDenominator());
 	}
 }
 
@@ -51,9 +52,10 @@ TEST (RatioArithmetic, minus) {
 		// generate random data
 		Rational ratio1(gen(), gen()), ratio2(gen(), gen());
 		Rational ratio3(ratio1 - ratio2);
+		Rational ratio4(ratio1.getNumerator()*ratio2.getDenominator() - ratio1.getDenominator()*ratio2.getNumerator(), ratio1.getDenominator()*ratio2.getDenominator());
 
-	    ASSERT_EQ(ratio3.getNumerator(), ratio1.getNumerator()*ratio2.getDenominator() - ratio1.getDenominator()*ratio2.getNumerator());
-        ASSERT_EQ(ratio3.getDenominator(), ratio1.getDenominator()*ratio2.getDenominator());
+	    ASSERT_EQ(ratio3.getNumerator(), ratio4.getNumerator());
+		ASSERT_EQ(ratio3.getDenominator(), ratio4.getDenominator());
 	}
 }
 
@@ -76,9 +78,10 @@ TEST (RatioArithmetic, product) {
 		// generate random data
 		Rational ratio1(gen(), gen()), ratio2(gen(), gen());
 		Rational ratio3(ratio1*ratio2);
+		Rational ratio4(ratio1.getNumerator()*ratio2.getNumerator(), ratio1.getDenominator()*ratio2.getDenominator());
 
-	    ASSERT_EQ(ratio3.getNumerator(), ratio1.getNumerator()*ratio2.getNumerator());
-        ASSERT_EQ(ratio3.getDenominator(), ratio1.getDenominator()*ratio2.getDenominator());
+	    ASSERT_EQ(ratio3.getNumerator(), ratio4.getNumerator());
+		ASSERT_EQ(ratio3.getDenominator(), ratio4.getDenominator());
 	}
 }
 
@@ -100,15 +103,16 @@ TEST (RatioArithmetic, division) {
 		// generate random data
 		Rational ratio1(gen(), gen()), ratio2(gen(), gen());
 		Rational ratio3(ratio1/ratio2);
+		Rational ratio4(ratio1.getNumerator()*ratio2.getDenominator(), ratio1.getDenominator()*ratio2.getNumerator());
 
-	    ASSERT_EQ(ratio3.getNumerator(), ratio1.getNumerator()*ratio2.getDenominator());
-        ASSERT_EQ(ratio3.getDenominator(), ratio1.getDenominator()*ratio2.getNumerator());
+	    ASSERT_EQ(ratio3.getNumerator(), ratio4.getNumerator());
+		ASSERT_EQ(ratio3.getDenominator(), ratio4.getDenominator());
 	}
 }
 
-/* Operators */
+/* Comparisons */
 
-TEST (RatioArithmetic, similarity) {
+TEST (RatioComparisons, similarity) {
 
 	// Seed
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -127,11 +131,11 @@ TEST (RatioArithmetic, similarity) {
 		Rational ratio1(gen(), gen());
 		Rational ratio2(ratio1);
 
-	    ASSERT_EQ(ratio1==ratio2, true);
+	    ASSERT_TRUE( ratio1 == ratio2);
 	}
 }
 
-TEST (RatioArithmetic, difference) {
+TEST (RatioComparisons, difference) {
 
 	// Seed
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -150,7 +154,7 @@ TEST (RatioArithmetic, difference) {
 		Rational ratio1(gen(), gen());
 		Rational ratio2(gen(), gen());
 
-	    ASSERT_EQ(ratio1!=ratio2, true);
+	    ASSERT_TRUE(ratio1 != ratio2);
 	}
 }
 
@@ -175,10 +179,10 @@ TEST (RatioArithmetic, inverse) {
 
 		// generate random data
 		Rational ratio1(gen(), gen());
-		Rational ratio2(ratio1.InvRatio());
+		Rational ratio2(ratio1.invRatio());
 
-	    ASSERT_EQ(ratio2.getNumerator(), ratio1.getNumerator());
-        ASSERT_EQ(ratio2.getDenominator(), ratio1.getDenominator());
+	    ASSERT_EQ(std::abs(ratio2.getNumerator()), ratio1.getDenominator());
+        ASSERT_EQ(ratio2.getDenominator(), std::abs(ratio1.getNumerator()));
 	}
 }
 
@@ -203,10 +207,10 @@ TEST (RatioArithmetic, power) {
 		int factor = gen();
 		Rational ratio1(gen(), gen());
 		Rational ratio2(power(ratio1, factor));
-		// do for loop with /
+		Rational powered((int) std::pow(ratio1.getNumerator(), factor), (int) std::pow(ratio1.getDenominator(), factor));
 
-	    ASSERT_EQ(ratio2.getNumerator(), (int) pow(ratio1.getNumerator(), factor));
-        ASSERT_EQ(ratio2.getDenominator(), (int) pow(ratio1.getDenominator(), factor));
+	    ASSERT_EQ(ratio2.getNumerator(), powered.getNumerator());
+        ASSERT_EQ(ratio2.getDenominator(), powered.getDenominator());
 	}
 }
 
