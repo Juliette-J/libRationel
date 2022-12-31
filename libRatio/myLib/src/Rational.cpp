@@ -362,11 +362,16 @@ Rational sinTaylor(const Rational &ratio) {
     return (ratioCopy - Rational(1,6)*power(ratio, 3) + Rational(1,120)*power(ratio, 5)).makeIrreductible();
 }
 
+Rational expTaylor(const Rational &ratio) {
+    Rational ratioCopy(ratio);
+    return (Rational(1,1) + ratioCopy + Rational(1,2)*power(ratio, 2) + Rational(1,6)*power(ratio, 3) + Rational(1,24)*power(ratio, 4) + Rational(1,120)*power(ratio, 5)).makeIrreductible();
+}
+
 Rational cosRatio(const Rational &ratio) {
     Rational result(1,1);
     Rational ratioCopy(ratio);
     // Near 0, use Taylor
-    if( Rational(1,1) >= ratioCopy ) {
+    if( Rational(1,1) > ratioCopy ) {
         result = cosTaylor(ratio);
     }
     else {
@@ -386,7 +391,7 @@ Rational sinRatio(const Rational &ratio) {
     Rational result(1,1);
     Rational ratioCopy(ratio);
     // Near 0, use Taylor
-    if( Rational(1,1) >= ratioCopy ) {
+    if( Rational(1,1) > ratioCopy ) {
         result = sinTaylor(ratio);
     }
     else {
@@ -398,6 +403,22 @@ Rational sinRatio(const Rational &ratio) {
 
     if(std::abs(((float)result.getNumerator())/((float)result.getDenominator())) > 1) {
         std::cout << "The result is not coherent due to the limitation of memory (integers encoded are too big for this rational)..." << std::endl; 
+    }
+    return result;
+}
+
+Rational expRatio(const Rational &ratio) {
+    Rational result(1,1);
+    Rational ratioCopy(ratio);
+    // Near 0, use Taylor
+    if( Rational(1,1) > ratio ) {
+        result = expTaylor(ratio);
+    }
+    else {
+        Rational int_part = Rational(ratioCopy.integerPart(), 1); // integer part of ratio
+        Rational decimal_part = Rational(ratioCopy - int_part); // decimal part of ratio
+            // sin(integer_part + decimal_part) ~ sin(a + b) = sin(a)cos(b) - sin(b)cos(a)
+        result = expTaylor(decimal_part).extProduct(std::exp(int_part.getNumerator()));
     }
     return result;
 }

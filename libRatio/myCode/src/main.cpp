@@ -76,6 +76,11 @@ int main() {
     std::cout << "cos(rati) : " << cosRatio(rati) << std::endl;
     std::cout << "sin(rati2) : " << sinRatio(rati2) << std::endl;
 
+    // Exponentielle
+    std::cout << "exp(1) : " << expRatio(Rational(1,1)) << std::endl;
+    std::cout << "exp(2) : " << expRatio(Rational(2,1)) << std::endl;
+    std::cout << "exp(rati) : " << expRatio(rati) << std::endl;
+
     // Comparaisons
 
     Rational rati3(2,3);
