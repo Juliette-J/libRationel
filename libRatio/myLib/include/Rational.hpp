@@ -4,6 +4,7 @@
 #ifndef RATIONNELS_HPP
 #define RATIONNELS_HPP
 
+//template<typename T>
 class Rational {
     private :
         int numerator;
@@ -52,7 +53,7 @@ class Rational {
 
         /* ----- Arithmetics ----- */
 
-        Rational invRatio(); // invert the rational ATTENTION -> DENOMINATEUR PEUT DEVENIR NEGATIF
+        Rational invRatio(); // invert the rational
 
         // square root pas complet jsp comment mieux faire
         Rational squareRoot();
@@ -71,7 +72,8 @@ class Rational {
 /* ---------------- Constructors ---------------- */
 
 template<typename U, typename V>
-Rational::Rational(const U &a, const V &b) {
+Rational::Rational(const U &a, const V &b) 
+{
     // 0 exception
     if(b == 0) {
         if(a==1) {
@@ -107,9 +109,9 @@ Rational::Rational(const U &a, const V &b) {
 
 /* ------- Methods outside Rational class ------- */
 
-Rational power(const Rational &ratio, const int &power);
+/*Rational power(const Rational &ratio, const int &power);
 Rational floatToRatio(const float &x, unsigned int nbIter); // conversion float to rational
-std::ostream& operator<< (std::ostream& stream, const Rational &ratio);
+std::ostream& operator<< (std::ostream& stream, const Rational &ratio);*/
 
 /*
 template<typename T>
@@ -135,6 +137,7 @@ class Rational {
 
 };
 */
+
 
 
 
