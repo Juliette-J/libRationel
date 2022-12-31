@@ -105,8 +105,9 @@ int main() {
     std::cout << "rati != rati : " << (rati != rati) << std::endl;
 
     // Conversion
-    float f = 2.5;
-    std::cout << "2.5 to ratio : " << floatToRatio(f, 5) << std::endl;
+    std::cout << "2.5 to ratio : " << floatToRatio(2.5, 5) << std::endl;
+    std::cout << "0.3 to ratio : " << floatToRatio(0.3, 10) << std::endl; // incoherent up to 10 epochs
+    std::cout << "0.75 to ratio : " << floatToRatio(0.75, 5) << std::endl; // should be 3/4 ...
 
     return 0;
 }

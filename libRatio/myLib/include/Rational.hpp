@@ -69,6 +69,14 @@ class Rational {
 
 };
 
+
+/* ------- Methods outside Rational class ------- */
+
+Rational power(const Rational &ratio, const int &power);
+Rational floatToRatio(const float &x, unsigned int nbIter); // conversion float to rational
+std::ostream& operator<< (std::ostream& stream, const Rational &ratio);
+
+
 /* ---------------- Constructors ---------------- */
 
 template<typename U, typename V>
@@ -106,37 +114,6 @@ Rational::Rational(const U &a, const V &b)
         denominator = denominator/std::abs(GCD);
     }
 }
-
-/* ------- Methods outside Rational class ------- */
-
-/*Rational power(const Rational &ratio, const int &power);
-Rational floatToRatio(const float &x, unsigned int nbIter); // conversion float to rational
-std::ostream& operator<< (std::ostream& stream, const Rational &ratio);*/
-
-/*
-template<typename T>
-class Rational {
-    private :
-        int numerator;
-        int denominator;
-
-    public :
-        // Constructors
-        Rational() = default; // by default
-        //Rational(const T &a = static_cast(1));
-        Rational(const T &a = static_cast(1), const T &b = static_cast(1));
-        Rational(const Rational &r) = default; // by copy
-
-        // Destructor
-        ~Rational() = default;
-
-        // Methods
-        Rational floatToRatio(const float &x, unsigned int nbIter);
-
-        // Operators
-
-};
-*/
 
 
 

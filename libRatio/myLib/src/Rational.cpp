@@ -355,21 +355,27 @@ Rational power(const Rational &ratio, const int &power) {
 
 Rational floatToRatio(const float &x, unsigned int nbIter) {
     // keep the sign of x
-    int sign;
+    float sign = 1.0 ;
     (x<0) ? sign = -1.0 : sign = 1.0;
 
     // stop conditions
     if(x == 0.0 || nbIter == 0) {
         return Rational(0,1);
     }
-    // decimal part
-    else if(x < 1.0) {
-        return power((floatToRatio(1/x, nbIter)), -1.0);
+    
+    // majoration of nbIter to keep a coherent result
+    if(nbIter > 10) {
+        nbIter = 10;
     }
-    // int part
+
+    // decimal part
+    if(x < 1.0) {
+        return floatToRatio(1/x, nbIter).invRatio();
+    }
+
+    // integer part
     else {
-        int int_part = std::floor(x);
-        return Rational(int_part, 1.0) + floatToRatio(x-int_part, nbIter-1);
+        return Rational(std::floor(x), 1) + floatToRatio(x-std::floor(x), nbIter-1);
     }
 }
 
