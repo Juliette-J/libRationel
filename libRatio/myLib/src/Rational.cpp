@@ -81,8 +81,6 @@ Rational<T> Rational<T>::operator/(const Rational<T> &ratio) const
 	return Rational(this->numerator*ratio.getDenominator(), this->denominator*ratio.getNumerator());
 }*/
 
-
-
 bool Rational::operator==(const Rational &ratio) {
     if (this->getNumerator() == ratio.getNumerator() && this->getDenominator() == ratio.getDenominator()) {
         return true;
@@ -281,7 +279,7 @@ int Rational::integerPart(){
     }
     else {
         int e = a;
-        while(e > this->getDenominator()){
+        while(e >= this->getDenominator()){
             e = e-this->getDenominator();
             res += 1;
         }
@@ -355,32 +353,53 @@ Rational power(const Rational &ratio, const int &power) {
     return Rational(pow_numerator, pow_denominator);
 }
 
-Rational cosRatioTaylor(const Rational &ratio) {
-    Rational ratioCopy(ratio);
-    if(Rational(1,1) <= ratio) {
-        Rational int_part = Rational(ratioCopy.integerPart(), 1); // integer part of ratio (>0)
-        Rational decimal_part = Rational(ratioCopy - int_part*ratioCopy); // decimal part of ratio
-
-        // impossible to use sinRatioTaylor() here because it is declared later in the file so make it now
-        Rational sinRatioTaylor(decimal_part - Rational(1,6)*power(decimal_part, 3) + Rational(1,120)*power(decimal_part, 5));
-        
-        // cos(integer_part + decimal_part) ~ cos(a + b) = cos(a)cos(b) - sin(a)sin(b)
-        return cosRatioTaylor(decimal_part).extProduct(std::cos(int_part.getNumerator()))-sinRatioTaylor.extProduct(std::sin(int_part.getNumerator()));
-    }
-    // after Talor development
-    return Rational(1,1) - Rational(1,2)*power(ratio, 2) + Rational(1,24)*power(ratio, 4);
+Rational cosTaylor(const Rational &ratio) {
+    return (Rational(1,1) - Rational(1,2)*power(ratio, 2) + Rational(1,24)*power(ratio, 4)).makeIrreductible();
 }
 
-Rational sinRatioTaylor(const Rational &ratio) {
+Rational sinTaylor(const Rational &ratio) {
     Rational ratioCopy(ratio);
-    if(Rational(1,1) <= ratio) {
-        Rational int_part = Rational(ratioCopy.integerPart(), 1); // integer part of ratio (>0)
-        Rational decimal_part = Rational(ratioCopy - int_part*ratioCopy); // decimal part of ratio
-        // sin(integer_part + decimal_part) ~ sin(a + b) = sin(a)cos(b) - sin(b)cos(a)
-        return cosRatioTaylor(decimal_part).extProduct(std::sin(int_part.getNumerator()))-sinRatioTaylor(decimal_part).extProduct(std::cos(int_part.getNumerator()));
+    return (ratioCopy - Rational(1,6)*power(ratio, 3) + Rational(1,120)*power(ratio, 5)).makeIrreductible();
+}
+
+Rational cosRatio(const Rational &ratio) {
+    Rational result(1,1);
+    Rational ratioCopy(ratio);
+    // Near 0, use Taylor
+    if( Rational(1,1) >= ratioCopy ) {
+        result = cosTaylor(ratio);
     }
-    // after Talor development
-    return ratioCopy - Rational(1,6)*power(ratio, 3) + Rational(1,120)*power(ratio, 5);
+    else {
+        Rational int_part = Rational(ratioCopy.integerPart(), 1); // integer part of ratio
+        Rational decimal_part = Rational(ratioCopy - int_part); // decimal part of ratio
+            // cos(integer_part + decimal_part) ~ cos(a + b) = cos(a)cos(b) - sin(a)sin(b)
+        result = cosTaylor(decimal_part).extProduct(std::cos(int_part.getNumerator()))-sinTaylor(decimal_part).extProduct(std::sin(int_part.getNumerator()));
+    }
+
+    if(std::abs(((float)result.getNumerator())/((float)result.getDenominator())) > 1) {
+        std::cout << "The result is not coherent due to the limitation of memory (integers encoded are too big for this rational)..." << std::endl; 
+    }
+    return result;
+}
+
+Rational sinRatio(const Rational &ratio) {
+    Rational result(1,1);
+    Rational ratioCopy(ratio);
+    // Near 0, use Taylor
+    if( Rational(1,1) >= ratioCopy ) {
+        result = sinTaylor(ratio);
+    }
+    else {
+        Rational int_part = Rational(ratioCopy.integerPart(), 1); // integer part of ratio
+        Rational decimal_part = Rational(ratioCopy - int_part); // decimal part of ratio
+            // sin(integer_part + decimal_part) ~ sin(a + b) = sin(a)cos(b) - sin(b)cos(a)
+        result = cosTaylor(decimal_part).extProduct(std::sin(int_part.getNumerator()))-sinTaylor(decimal_part).extProduct(std::cos(int_part.getNumerator()));
+    }
+
+    if(std::abs(((float)result.getNumerator())/((float)result.getDenominator())) > 1) {
+        std::cout << "The result is not coherent due to the limitation of memory (integers encoded are too big for this rational)..." << std::endl; 
+    }
+    return result;
 }
 
 Rational floatToRatio(const float &x, unsigned int nbIter) {

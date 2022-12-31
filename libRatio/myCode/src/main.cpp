@@ -69,6 +69,13 @@ int main() {
     std::cout << "rati2 x -3 : " << rati2.extProduct(-3.0) << std::endl;
     std::cout << "rati2 x -0.2 : " << rati2.extProduct(-0.2) << std::endl;
 
+
+    // Cos et sin
+    std::cout << "cos(2) : " << cosRatio(Rational(2,1)) << std::endl;
+    std::cout << "sin(0.5) : " << sinRatio(Rational(1,2)) << std::endl;
+    std::cout << "cos(rati) : " << cosRatio(rati) << std::endl;
+    std::cout << "sin(rati2) : " << sinRatio(rati2) << std::endl;
+
     // Comparaisons
 
     Rational rati3(2,3);

@@ -28,6 +28,11 @@ class Rational {
 
         Rational operator+(const Rational &ratio);
         Rational operator-(const Rational &ratio);
+        Rational operator*(const Rational &ratio);
+        Rational operator/(const Rational &ratio);
+
+        //ne fonctionne pas
+        Rational operator-();
 
         bool operator>=(const Rational &ratio);
         bool operator<=(const Rational &ratio);
@@ -36,19 +41,15 @@ class Rational {
         bool operator==(const Rational &ratio);
         bool operator!=(const Rational &ratio);
 
-        //ne fonctionne pas
-        Rational operator-();
 
-        Rational operator*(const Rational &ratio);
-        Rational operator/(const Rational &ratio);
-
-        
         /* ---------------- Methods ---------------- */
 
         /* ----- Getter/Setter ----- */
 
         int getNumerator() const {return numerator; }; // get the numerator of the rational
         int getDenominator() const {return denominator; }; // get the denominator of the rational
+        //void setNumerator(const int &num) {numerator = num; }; // get the numerator of the rational
+        //void setDenominator(const int &den) {denominator = den; }; // get the denominator of the rational
         
 
         /* ----- Arithmetics ----- */
@@ -74,9 +75,11 @@ class Rational {
 /* ------- Methods outside Rational class ------- */
 
 Rational power(const Rational &ratio, const int &power);
-Rational cos(const Rational &ratio);
-Rational sin(const Rational &ratio);
-Rational floatToRatio(const float &x, unsigned int nbIter); // conversion float to rational
+Rational cosTaylor(const Rational &ratio);
+Rational sinTaylor(const Rational &ratio);
+Rational cosRatio(const Rational &ratio);
+Rational sinRatio(const Rational &ratio);
+Rational floatToRatio(const float &x, unsigned int nbIter = 5); // conversion float to rational
 std::ostream& operator<< (std::ostream& stream, const Rational &ratio);
 
 
