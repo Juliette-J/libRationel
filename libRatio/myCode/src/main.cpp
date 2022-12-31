@@ -63,6 +63,11 @@ int main() {
     std::cout << "power(rati, 3) : " << power(rati, 3) << std::endl;
     std::cout << "power(rati2, -2) : " << power(rati2, -2) << std::endl;
 
+    std::cout << std::endl;
+
+    // Produit externe
+    std::cout << "rati2 x -3 : " << rati2.extProduct(-3.0) << std::endl;
+    std::cout << "rati2 x -0.2 : " << rati2.extProduct(-0.2) << std::endl;
 
     // Comparaisons
 
@@ -105,9 +110,11 @@ int main() {
     std::cout << "rati != rati : " << (rati != rati) << std::endl;
 
     // Conversion
-    std::cout << "2.5 to ratio : " << floatToRatio(2.5, 5) << std::endl;
+    std::cout << "-2.5 to ratio : " << floatToRatio(-2.5 , 5) << std::endl;
+    /*
     std::cout << "0.3 to ratio : " << floatToRatio(0.3, 10) << std::endl; // incoherent up to 10 epochs
     std::cout << "0.75 to ratio : " << floatToRatio(0.75, 5) << std::endl; // should be 3/4 ...
+    */
 
     return 0;
 }

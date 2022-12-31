@@ -179,6 +179,10 @@ bool Rational<T>::operator>(const Rational &ratio)
 
 /* ----- Arithmetics ----- */
 
+Rational Rational::extProduct(const float &f) {
+    Rational ratio(floatToRatio(f, 7));
+    return Rational((*this)*ratio);
+}
 
 Rational Rational::invRatio(){
 	return Rational(this->getDenominator(), this->getNumerator());
@@ -351,31 +355,58 @@ Rational power(const Rational &ratio, const int &power) {
     return Rational(pow_numerator, pow_denominator);
 }
 
+Rational cosRatioTaylor(const Rational &ratio) {
+    Rational ratioCopy(ratio);
+    if(Rational(1,1) <= ratio) {
+        Rational int_part = Rational(ratioCopy.integerPart(), 1); // integer part of ratio (>0)
+        Rational decimal_part = Rational(ratioCopy - int_part*ratioCopy); // decimal part of ratio
 
+        // impossible to use sinRatioTaylor() here because it is declared later in the file so make it now
+        Rational sinRatioTaylor(decimal_part - Rational(1,6)*power(decimal_part, 3) + Rational(1,120)*power(decimal_part, 5));
+        
+        // cos(integer_part + decimal_part) ~ cos(a + b) = cos(a)cos(b) - sin(a)sin(b)
+        return cosRatioTaylor(decimal_part).extProduct(std::cos(int_part.getNumerator()))-sinRatioTaylor.extProduct(std::sin(int_part.getNumerator()));
+    }
+    // after Talor development
+    return Rational(1,1) - Rational(1,2)*power(ratio, 2) + Rational(1,24)*power(ratio, 4);
+}
+
+Rational sinRatioTaylor(const Rational &ratio) {
+    Rational ratioCopy(ratio);
+    if(Rational(1,1) <= ratio) {
+        Rational int_part = Rational(ratioCopy.integerPart(), 1); // integer part of ratio (>0)
+        Rational decimal_part = Rational(ratioCopy - int_part*ratioCopy); // decimal part of ratio
+        // sin(integer_part + decimal_part) ~ sin(a + b) = sin(a)cos(b) - sin(b)cos(a)
+        return cosRatioTaylor(decimal_part).extProduct(std::sin(int_part.getNumerator()))-sinRatioTaylor(decimal_part).extProduct(std::cos(int_part.getNumerator()));
+    }
+    // after Talor development
+    return ratioCopy - Rational(1,6)*power(ratio, 3) + Rational(1,120)*power(ratio, 5);
+}
 
 Rational floatToRatio(const float &x, unsigned int nbIter) {
     // keep the sign of x
-    float sign = 1.0 ;
+    float sign;
     (x<0) ? sign = -1.0 : sign = 1.0;
 
-    // stop conditions
-    if(x == 0.0 || nbIter == 0) {
-        return Rational(0,1);
-    }
-    
+    // resume with abs(x) as the sign was kept
+    float absX = std::abs(x);
+
     // majoration of nbIter to keep a coherent result
-    if(nbIter > 10) {
-        nbIter = 10;
+    (nbIter > 10) ? nbIter = 10 : nbIter ;
+    
+    // stop conditions
+    if(x == 0. || nbIter == 0) {
+        return Rational(0,1);
     }
 
     // decimal part
-    if(x < 1.0) {
-        return floatToRatio(1/x, nbIter).invRatio();
+    else if(absX < 1.0) {
+        return floatToRatio(1/absX*sign, nbIter).invRatio();
     }
 
     // integer part
     else {
-        return Rational(std::floor(x), 1) + floatToRatio(x-std::floor(x), nbIter-1);
+        return Rational(std::floor(absX)*sign, 1) + floatToRatio((absX-std::floor(absX))*sign, nbIter-1);
     }
 }
 

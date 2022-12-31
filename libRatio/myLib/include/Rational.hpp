@@ -53,6 +53,7 @@ class Rational {
 
         /* ----- Arithmetics ----- */
 
+        Rational extProduct(const float &f);
         Rational invRatio(); // invert the rational
 
         // square root pas complet jsp comment mieux faire
@@ -73,6 +74,8 @@ class Rational {
 /* ------- Methods outside Rational class ------- */
 
 Rational power(const Rational &ratio, const int &power);
+Rational cos(const Rational &ratio);
+Rational sin(const Rational &ratio);
 Rational floatToRatio(const float &x, unsigned int nbIter); // conversion float to rational
 std::ostream& operator<< (std::ostream& stream, const Rational &ratio);
 
