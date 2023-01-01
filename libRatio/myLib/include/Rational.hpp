@@ -13,9 +13,9 @@ class Rational {
     public :
         /* ---------------- Constructors ---------------- */ 
 
-        template<typename U, typename V>
-        Rational(const U &a = 1, const V &b = 1);
-    
+        template<typename U>
+        Rational(const U &a = 1, const U &b = 1);
+
         Rational(const Rational &r) = default; // by copy
 
 
@@ -29,6 +29,7 @@ class Rational {
         Rational operator+(const Rational &ratio);
         Rational operator-(const Rational &ratio);
         Rational operator*(const Rational &ratio);
+        Rational operator*(const float &f); // extern product
         Rational operator/(const Rational &ratio);
 
         //ne fonctionne pas
@@ -48,13 +49,9 @@ class Rational {
 
         int getNumerator() const {return numerator; }; // get the numerator of the rational
         int getDenominator() const {return denominator; }; // get the denominator of the rational
-        //void setNumerator(const int &num) {numerator = num; }; // get the numerator of the rational
-        //void setDenominator(const int &den) {denominator = den; }; // get the denominator of the rational
-        
 
         /* ----- Arithmetics ----- */
 
-        Rational extProduct(const float &f);
         Rational invRatio(); // invert the rational
 
         // square root pas complet jsp comment mieux faire
@@ -87,16 +84,17 @@ std::ostream& operator<< (std::ostream& stream, const Rational &ratio);
 
 /* ---------------- Constructors ---------------- */
 
-template<typename U, typename V>
-Rational::Rational(const U &a, const V &b) 
-{
+template<typename U>
+Rational::Rational(const U &a, const U &b) {
     // 0 exception
     if(b == 0) {
+        // infinite
         if(a==1) {
             std::cout << "You reached the infinite !" << std::endl;
             numerator = 1;
             denominator = 0;
         }
+        // zero
         else {
             std::cout << "It's impossible to divide by 0 ! We let you to 0." << std::endl;
             numerator = 0;
@@ -104,12 +102,11 @@ Rational::Rational(const U &a, const V &b)
         }
     }
     
-    // case b < 0
+    // case b < 0 (negative denominator)
     if(b < 0) {
         numerator = -a;
         denominator = -b;
     } 
-    
     else {
         numerator = a;
         denominator = b;
@@ -123,7 +120,40 @@ Rational::Rational(const U &a, const V &b)
     }
 }
 
+/*
+template<>
+Rational::Rational<float>(const float &a, const float &b) {
+    // 0 exception
+    if(b == 0.) {
+        if(a == 1.) {
+            std::cout << "You reached the infinite !" << std::endl;
+            numerator = 1;
+            denominator = 0;
+        }
+        // zero
+        else {
+            std::cout << "It's impossible to divide by 0 ! We let you to 0." << std::endl;
+            numerator = 0;
+            denominator = 1;
+        }
+    }
+    
+    // conversion : float to ratio
+    Rational a_to_ratio(floatToRatio(a,7));
+    Rational b_to_ratio(floatToRatio(b,7));
+    Rational ratio(a_to_ratio/b_to_ratio);
+    ratio.makeIrreductible();
 
-
+    // case negative denominator
+    if(ratio.getDenominator() < 0) {
+        numerator = -ratio.getNumerator();
+        denominator = -ratio.getDenominator();
+    } 
+    else {
+        numerator = ratio.getNumerator();
+        denominator = ratio.getDenominator();
+    }
+}
+*/
 
 #endif

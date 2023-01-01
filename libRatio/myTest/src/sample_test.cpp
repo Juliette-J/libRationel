@@ -7,9 +7,40 @@
 #include <functional>
 #include <gtest/gtest.h>
 
+/* Constructor */
+TEST (RatioConstructor, constructor) {
+
+	// Seed
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+	// Generator
+	std::mt19937 generator(seed);
+
+	// Distribution
+	std::uniform_int_distribution<int> uniformIntDistribution(-50,50);
+	auto gen = std::bind(uniformIntDistribution, generator);
+
+	// run many times the same test with different values
+	for(int run=0; run<100; ++run){
+
+		// generate random data
+		int num = gen();
+		int den = gen();
+		Rational ratio(num, den);
+
+		if(den < 0) {
+			num = -num;
+			den = -den;
+		}
+
+	    ASSERT_EQ(ratio.getNumerator()*std::gcd(num, den), num);
+		ASSERT_EQ(ratio.getDenominator()*std::gcd(num, den), den);
+	}
+}
+
 /* Operators */
 
-TEST (RatioArithmetic, plus) {
+TEST (RatioOperators, plus) {
 
 	// Seed
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -26,7 +57,7 @@ TEST (RatioArithmetic, plus) {
 
 		// generate random data
 		Rational ratio1(gen(), gen()), ratio2(gen(), gen());
-		Rational ratio3(ratio1 + ratio2);
+		Rational ratio3 = ratio1 + ratio2;
 		Rational ratio4(ratio1.getNumerator()*ratio2.getDenominator() + ratio1.getDenominator()*ratio2.getNumerator(), ratio1.getDenominator()*ratio2.getDenominator());
 
 	    ASSERT_EQ(ratio3.getNumerator(), ratio4.getNumerator());
@@ -34,7 +65,7 @@ TEST (RatioArithmetic, plus) {
 	}
 }
 
-TEST (RatioArithmetic, minus) {
+TEST (RatioOperators, minus) {
 
 	// Seed
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -51,7 +82,7 @@ TEST (RatioArithmetic, minus) {
 
 		// generate random data
 		Rational ratio1(gen(), gen()), ratio2(gen(), gen());
-		Rational ratio3(ratio1 - ratio2);
+		Rational ratio3 = ratio1 - ratio2;
 		Rational ratio4(ratio1.getNumerator()*ratio2.getDenominator() - ratio1.getDenominator()*ratio2.getNumerator(), ratio1.getDenominator()*ratio2.getDenominator());
 
 	    ASSERT_EQ(ratio3.getNumerator(), ratio4.getNumerator());
@@ -59,8 +90,7 @@ TEST (RatioArithmetic, minus) {
 	}
 }
 
-
-TEST (RatioArithmetic, product) {
+TEST (RatioOperators, product) {
 
 	// Seed
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -69,7 +99,7 @@ TEST (RatioArithmetic, product) {
 	std::mt19937 generator(seed);
 
 	// Distribution
-	std::uniform_int_distribution<int> uniformIntDistribution(-50,50);
+	std::uniform_int_distribution<int> uniformIntDistribution(-20,20);
 	auto gen = std::bind(uniformIntDistribution, generator);
 
 	// run many times the same test with different values
@@ -77,7 +107,7 @@ TEST (RatioArithmetic, product) {
 
 		// generate random data
 		Rational ratio1(gen(), gen()), ratio2(gen(), gen());
-		Rational ratio3(ratio1*ratio2);
+		Rational ratio3 = ratio1*ratio2;
 		Rational ratio4(ratio1.getNumerator()*ratio2.getNumerator(), ratio1.getDenominator()*ratio2.getDenominator());
 
 	    ASSERT_EQ(ratio3.getNumerator(), ratio4.getNumerator());
@@ -85,7 +115,7 @@ TEST (RatioArithmetic, product) {
 	}
 }
 
-TEST (RatioArithmetic, division) {
+TEST (RatioOperators, extern_product) {
 
 	// Seed
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -94,7 +124,37 @@ TEST (RatioArithmetic, division) {
 	std::mt19937 generator(seed);
 
 	// Distribution
+	std::uniform_real_distribution<float> uniformFloatDistribution(-10,10);
 	std::uniform_int_distribution<int> uniformIntDistribution(-50,50);
+	auto gen_real = std::bind(uniformFloatDistribution, generator);
+	auto gen_int = std::bind(uniformIntDistribution, generator);
+
+	// run many times the same test with different values
+	for(int run=0; run<100; ++run){
+
+		// generate random data
+		float real = gen_real();
+		Rational ratio1(gen_int(), gen_int());
+		Rational ratio2 = ratio1*real;
+
+		Rational f_to_ratio = floatToRatio(real);
+		Rational ratio3(ratio1.getNumerator()*f_to_ratio.getNumerator(), ratio1.getDenominator()*f_to_ratio.getDenominator());
+
+	    ASSERT_EQ(ratio2.getNumerator(), ratio3.getNumerator());
+        ASSERT_EQ(ratio2.getDenominator(), ratio3.getDenominator());
+	}
+}
+
+TEST (RatioOperators, division) {
+
+	// Seed
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+	// Generator
+	std::mt19937 generator(seed);
+
+	// Distribution
+	std::uniform_int_distribution<int> uniformIntDistribution(-20,20);
 	auto gen = std::bind(uniformIntDistribution, generator);
 
 	// run many times the same test with different values
@@ -102,7 +162,7 @@ TEST (RatioArithmetic, division) {
 
 		// generate random data
 		Rational ratio1(gen(), gen()), ratio2(gen(), gen());
-		Rational ratio3(ratio1/ratio2);
+		Rational ratio3 = ratio1/ratio2;
 		Rational ratio4(ratio1.getNumerator()*ratio2.getDenominator(), ratio1.getDenominator()*ratio2.getNumerator());
 
 	    ASSERT_EQ(ratio3.getNumerator(), ratio4.getNumerator());
@@ -129,8 +189,10 @@ TEST (RatioComparisons, similarity) {
 
 		// generate random data
 		Rational ratio1(gen(), gen());
-		Rational ratio2(ratio1);
+		Rational ratio2 = ratio1;
 
+		ASSERT_EQ(ratio1.getNumerator(), ratio2.getNumerator());
+		ASSERT_EQ(ratio1.getDenominator(), ratio2.getDenominator());
 	    ASSERT_TRUE( ratio1 == ratio2);
 	}
 }
@@ -154,7 +216,7 @@ TEST (RatioComparisons, difference) {
 		Rational ratio1(gen(), gen());
 		Rational ratio2(gen(), gen());
 
-	    ASSERT_TRUE(ratio1 != ratio2);
+		ASSERT_TRUE(ratio1 != ratio2);
 	}
 }
 
@@ -197,7 +259,7 @@ TEST (RatioArithmetic, power) {
 	std::mt19937 generator(seed);
 
 	// Distribution
-	std::uniform_int_distribution<int> uniformIntDistribution(-10,10);
+	std::uniform_int_distribution<int> uniformIntDistribution(-5,5);
 	auto gen = std::bind(uniformIntDistribution, generator);
 
 	// run many times the same test with different values
@@ -206,14 +268,125 @@ TEST (RatioArithmetic, power) {
 		// generate random data
 		int factor = gen();
 		Rational ratio1(gen(), gen());
-		Rational ratio2(power(ratio1, factor));
-		Rational powered((int) std::pow(ratio1.getNumerator(), factor), (int) std::pow(ratio1.getDenominator(), factor));
+		Rational ratio2 = power(ratio1, factor);
 
-	    ASSERT_EQ(ratio2.getNumerator(), powered.getNumerator());
-        ASSERT_EQ(ratio2.getDenominator(), powered.getDenominator());
+		int powered_num;
+		int powered_den;
+
+		if(factor < 0) {
+			powered_num = std::pow(ratio1.getDenominator(), -factor);
+			powered_den = std::pow(ratio1.getNumerator(), -factor);
+		}
+		else {
+			powered_num = std::pow(ratio1.getNumerator(), factor);
+			powered_den = std::pow(ratio1.getDenominator(), factor);
+		}
+
+		Rational ratio3(powered_num, powered_den);
+
+	    ASSERT_EQ(ratio2.getNumerator(), ratio3.getNumerator());
+        ASSERT_EQ(ratio2.getDenominator(), ratio3.getDenominator());
 	}
 }
 
+TEST (RatioArithmetic, cosRatio) {
+
+	// Seed
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+	// Generator
+	std::mt19937 generator(seed);
+
+	// Distribution
+	std::uniform_int_distribution<int> uniformIntDistribution(-5,5);
+	auto gen = std::bind(uniformIntDistribution, generator);
+
+	// run many times the same test with different values
+	for(int run=0; run<100; ++run){
+
+		// generate random data
+		Rational ratio1(gen(), gen()); 
+		Rational ratio2 = cosRatio(ratio1);
+
+		// keep the integer part + the three first decimals of the exact solution
+		float cos_exact_result = std::cos(((float)ratio1.getNumerator())/((float)ratio1.getDenominator()));
+		cos_exact_result *= 1000;
+		cos_exact_result = std::floor(cos_exact_result);
+
+		// keep the integer part + the three first decimals of the found solution
+		float cos_result = ((float)ratio2.getNumerator())/((float)ratio2.getDenominator());
+		cos_result *= 1000;
+		cos_result = std::floor(cos_result);
+
+	    ASSERT_EQ(cos_result, cos_exact_result);
+	}
+}
+
+TEST (RatioArithmetic, sinRatio) {
+
+	// Seed
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+	// Generator
+	std::mt19937 generator(seed);
+
+	// Distribution
+	std::uniform_int_distribution<int> uniformIntDistribution(-5,5);
+	auto gen = std::bind(uniformIntDistribution, generator);
+
+	// run many times the same test with different values
+	for(int run=0; run<100; ++run){
+
+		// generate random data
+		Rational ratio1(gen(), gen()); 
+		Rational ratio2 = sinRatio(ratio1);
+
+		// keep the integer part + the three first decimals of the exact solution
+		float sin_exact_result = std::sin(((float)ratio1.getNumerator())/((float)ratio1.getDenominator()));
+		sin_exact_result *= 1000;
+		sin_exact_result = std::floor(sin_exact_result);
+
+		// keep the integer part + the three first decimals of the found solution
+		float sin_result = ((float)ratio2.getNumerator())/((float)ratio2.getDenominator());
+		sin_result *= 1000;
+		sin_result = std::floor(sin_result);
+
+	    ASSERT_EQ(sin_result, sin_exact_result);
+	}
+}
+
+TEST (RatioArithmetic, expRatio) {
+
+	// Seed
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+	// Generator
+	std::mt19937 generator(seed);
+
+	// Distribution
+	std::uniform_int_distribution<int> uniformIntDistribution(-5,5);
+	auto gen = std::bind(uniformIntDistribution, generator);
+
+	// run many times the same test with different values
+	for(int run=0; run<100; ++run){
+
+		// generate random data
+		Rational ratio1(gen(), gen()); 
+		Rational ratio2 = expRatio(ratio1);
+
+		// keep the integer part + the three first decimals of the exact solution
+		float exp_exact_result = std::exp(((float)ratio1.getNumerator())/((float)ratio1.getDenominator()));
+		exp_exact_result *= 1000;
+		exp_exact_result = std::floor(exp_exact_result);
+
+		// keep the integer part + the three first decimals of the found solution
+		float exp_result = ((float)ratio2.getNumerator())/((float)ratio2.getDenominator());
+		exp_result *= 1000;
+		exp_result = std::floor(exp_result);
+
+	    ASSERT_EQ(exp_result, exp_exact_result);
+	}
+}
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);

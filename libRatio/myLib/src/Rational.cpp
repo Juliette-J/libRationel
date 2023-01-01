@@ -67,6 +67,11 @@ Rational<T> Rational<T>::operator*(const Rational<T> &ratio) const
 	return Rational(this->numerator*ratio.getNumerator(), this->denominator*ratio.getDenominator());
 }*/
 
+Rational Rational::operator*(const float &f) {
+	Rational f_to_ratio = floatToRatio(f, 7);
+    return ((*this)*f_to_ratio).makeIrreductible();
+}
+
 
 Rational Rational::operator/(const Rational &ratio) {
     return Rational(this->numerator*ratio.getDenominator(), this->denominator*ratio.getNumerator());
@@ -81,8 +86,9 @@ Rational<T> Rational<T>::operator/(const Rational<T> &ratio) const
 	return Rational(this->numerator*ratio.getDenominator(), this->denominator*ratio.getNumerator());
 }*/
 
+
 bool Rational::operator==(const Rational &ratio) {
-    if (this->getNumerator() == ratio.getNumerator() && this->getDenominator() == ratio.getDenominator()) {
+    if(this->getNumerator() == ratio.getNumerator() && this->getDenominator() == ratio.getDenominator()) {
         return true;
     }
     return false;
@@ -176,11 +182,6 @@ bool Rational<T>::operator>(const Rational &ratio)
 /* ---------------- Methods ---------------- */
 
 /* ----- Arithmetics ----- */
-
-Rational Rational::extProduct(const float &f) {
-    Rational ratio(floatToRatio(f, 7));
-    return Rational((*this)*ratio);
-}
 
 Rational Rational::invRatio(){
 	return Rational(this->getDenominator(), this->getNumerator());
@@ -343,9 +344,8 @@ Rational<T> Rational<T>::makeIrreductible() {
 
 Rational power(const Rational &ratio, const int &power) {
     if(power < 0) {
-        Rational ratioCopy(ratio);
-        int pow_numerator = std::pow(ratioCopy.getDenominator(), -power);
-        int pow_denominator = std::pow(ratioCopy.getNumerator(), -power);
+        int pow_numerator = std::pow(ratio.getDenominator(), -power);
+        int pow_denominator = std::pow(ratio.getNumerator(), -power);
         return Rational(pow_numerator, pow_denominator);
     }
     int pow_numerator = std::pow(ratio.getNumerator(), power);
@@ -371,14 +371,14 @@ Rational cosRatio(const Rational &ratio) {
     Rational result(1,1);
     Rational ratioCopy(ratio);
     // Near 0, use Taylor
-    if( Rational(1,1) > ratioCopy ) {
+    if( Rational(3,4) > ratioCopy ) {
         result = cosTaylor(ratio);
     }
     else {
         Rational int_part = Rational(ratioCopy.integerPart(), 1); // integer part of ratio
         Rational decimal_part = Rational(ratioCopy - int_part); // decimal part of ratio
             // cos(integer_part + decimal_part) ~ cos(a + b) = cos(a)cos(b) - sin(a)sin(b)
-        result = cosTaylor(decimal_part).extProduct(std::cos(int_part.getNumerator()))-sinTaylor(decimal_part).extProduct(std::sin(int_part.getNumerator()));
+        result = cosTaylor(decimal_part)*(std::cos(int_part.getNumerator()))-sinTaylor(decimal_part)*(std::sin(int_part.getNumerator()));
     }
 
     if(std::abs(((float)result.getNumerator())/((float)result.getDenominator())) > 1) {
@@ -391,14 +391,14 @@ Rational sinRatio(const Rational &ratio) {
     Rational result(1,1);
     Rational ratioCopy(ratio);
     // Near 0, use Taylor
-    if( Rational(1,1) > ratioCopy ) {
+    if( Rational(3,4) > ratioCopy ) {
         result = sinTaylor(ratio);
     }
     else {
         Rational int_part = Rational(ratioCopy.integerPart(), 1); // integer part of ratio
         Rational decimal_part = Rational(ratioCopy - int_part); // decimal part of ratio
             // sin(integer_part + decimal_part) ~ sin(a + b) = sin(a)cos(b) - sin(b)cos(a)
-        result = cosTaylor(decimal_part).extProduct(std::sin(int_part.getNumerator()))-sinTaylor(decimal_part).extProduct(std::cos(int_part.getNumerator()));
+        result = cosTaylor(decimal_part)*(std::sin(int_part.getNumerator()))-sinTaylor(decimal_part)*(std::cos(int_part.getNumerator()));
     }
 
     if(std::abs(((float)result.getNumerator())/((float)result.getDenominator())) > 1) {
@@ -408,7 +408,7 @@ Rational sinRatio(const Rational &ratio) {
 }
 
 Rational expRatio(const Rational &ratio) {
-    Rational result(1,1);
+    Rational result(3,4);
     Rational ratioCopy(ratio);
     // Near 0, use Taylor
     if( Rational(1,1) > ratio ) {
@@ -418,7 +418,7 @@ Rational expRatio(const Rational &ratio) {
         Rational int_part = Rational(ratioCopy.integerPart(), 1); // integer part of ratio
         Rational decimal_part = Rational(ratioCopy - int_part); // decimal part of ratio
             // sin(integer_part + decimal_part) ~ sin(a + b) = sin(a)cos(b) - sin(b)cos(a)
-        result = expTaylor(decimal_part).extProduct(std::exp(int_part.getNumerator()));
+        result = expTaylor(decimal_part)*(std::exp(int_part.getNumerator()));
     }
     return result;
 }
@@ -446,7 +446,7 @@ Rational floatToRatio(const float &x, unsigned int nbIter) {
 
     // integer part
     else {
-        return Rational(std::floor(absX)*sign, 1) + floatToRatio((absX-std::floor(absX))*sign, nbIter-1);
+        return Rational((int)(std::floor(absX)*sign), 1) + floatToRatio((absX-std::floor(absX))*sign, nbIter-1);
     }
 }
 
