@@ -57,11 +57,24 @@ class Rational {
         Rational squareRoot(); 
         Rational squareRoot2();
 
+        // power
+        Rational power(const int &power);
+
         // logarithm
         Rational log(); // 
         Rational log2(); // logarithm
 
         Rational absolute(); // absolute value
+
+        Rational cosTaylor();
+        Rational sinTaylor();
+        Rational tanTaylor();
+        Rational expTaylor();
+
+        Rational cosRatio();
+        Rational sinRatio();
+        Rational tanRatio();
+        Rational expRatio();
         
 
         /* ----- Manipulations ----- */
@@ -73,18 +86,6 @@ class Rational {
 
 
 /* ------- Methods outside Rational class ------- */
-
-Rational power(const Rational &ratio, const int &power);
-
-Rational cosTaylor(const Rational &ratio);
-Rational sinTaylor(const Rational &ratio);
-Rational tanTaylor(const Rational &ratio);
-Rational expTaylor(const Rational &ratio);
-
-Rational cosRatio(const Rational &ratio);
-Rational sinRatio(const Rational &ratio);
-Rational tanRatio(const Rational &ratio);
-Rational expRatio(const Rational &ratio);
 
 Rational floatToRatio(const float &x, unsigned int nbIter = 5); // conversion float to rational
 
@@ -129,6 +130,8 @@ Rational::Rational(const U &a, const U &b) {
     }
 }
 
+/* Constructor based on floats [not working -> compilation error : already difined] */
+
 /*
 template<>
 Rational::Rational<float>(const float &a, const float &b) {
@@ -162,7 +165,7 @@ Rational::Rational<float>(const float &a, const float &b) {
         numerator = ratio.getNumerator();
         denominator = ratio.getDenominator();
     }
-}
-*/
+} */
+
 
 #endif

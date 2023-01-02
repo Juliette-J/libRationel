@@ -4,7 +4,7 @@
 
 int main() {
 
-    //Rational ratio(1.1, 2.2);
+    Rational ratio(1.1, 2.2);
     Rational rat1(1,3);
     Rational rat2(12,4);
     Rational rat3(5,9);
@@ -15,7 +15,7 @@ int main() {
     // Display and constructors
  
     std::cout << "Display and constructors : "<< std::endl;
-    //std::cout << ratio << std::endl;
+    std::cout << ratio << std::endl;
     std::cout << rat1 << std::endl;
     std::cout << rat2 << std::endl;
     std::cout << rat2.invRatio() << std::endl;
@@ -69,23 +69,23 @@ int main() {
     std::cout << "Integer : " << rati2.integerPart() << std::endl;
 
     // power
-    std::cout << "power(rati, 3) : " << power(rati, 3) << std::endl;
-    std::cout << "power(rati2, -2) : " << power(rati2, -2) << std::endl;
+    std::cout << "power(rati, 3) : " << rati.power(3) << std::endl;
+    std::cout << "power(rati2, -2) : " << rati2.power(-2) << std::endl;
 
     // extern product
     std::cout << "rati2 x -3 : " << rati2*(-3.0) << std::endl;
     std::cout << "rati2 x -0.2 : " << rati2*(-0.2) << std::endl;
 
     // cos and sin
-    std::cout << "cos(2) : " << cosRatio(Rational(2,1)) << std::endl;
-    std::cout << "sin(0.5) : " << sinRatio(Rational(1,2)) << std::endl;
-    std::cout << "cos(rati) : " << cosRatio(rati) << std::endl;
-    std::cout << "sin(rati2) : " << sinRatio(rati2) << std::endl;
+    std::cout << "cos(2) : " << Rational(2,1).cosRatio() << std::endl;
+    std::cout << "sin(0.5) : " << Rational(1,2).sinRatio() << std::endl;
+    std::cout << "cos(rati) : " << rati.cosRatio() << std::endl;
+    std::cout << "sin(rati2) : " << rati2.sinRatio() << std::endl;
 
     // exponential
-    std::cout << "exp(1) : " << expRatio(Rational(1,1)) << std::endl;
-    std::cout << "exp(2) : " << expRatio(Rational(2,1)) << std::endl;
-    std::cout << "exp(rati) : " << expRatio(rati) << std::endl;
+    std::cout << "exp(1) : " << Rational(1,1).expRatio() << std::endl;
+    std::cout << "exp(2) : " << Rational(2,1).expRatio() << std::endl;
+    std::cout << "exp(rati) : " << rati.expRatio() << std::endl;
 
     std::cout << std::endl;
 

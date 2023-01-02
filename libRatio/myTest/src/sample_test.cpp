@@ -135,7 +135,7 @@ TEST (RatioOperators, extern_product) {
 		// generate random data
 		float real = gen_real();
 		Rational ratio1(gen_int(), gen_int());
-		Rational ratio2 = ratio1*real;
+		Rational ratio2(ratio1*real);
 
 		Rational f_to_ratio = floatToRatio(real);
 		Rational ratio3(ratio1.getNumerator()*f_to_ratio.getNumerator(), ratio1.getDenominator()*f_to_ratio.getDenominator());
@@ -162,11 +162,11 @@ TEST (RatioOperators, division) {
 
 		// generate random data
 		Rational ratio1(gen(), gen()), ratio2(gen(), gen());
-		Rational ratio3 = ratio1/ratio2;
+		Rational ratio3(ratio1/ratio2);
 		Rational ratio4(ratio1.getNumerator()*ratio2.getDenominator(), ratio1.getDenominator()*ratio2.getNumerator());
 
-	    ASSERT_EQ(ratio3.getNumerator(), ratio4.getNumerator());
 		ASSERT_EQ(ratio3.getDenominator(), ratio4.getDenominator());
+		ASSERT_EQ(ratio3.getNumerator(), ratio4.getNumerator());
 	}
 }
 
@@ -213,7 +213,7 @@ TEST (RatioComparisons, difference) {
 	for(int run=0; run<100; ++run){
 
 		// generate random data
-		Rational ratio1(gen(), gen());
+		Rational ratio1(60, 1);
 		Rational ratio2(gen(), gen());
 
 		ASSERT_TRUE(ratio1 != ratio2);
@@ -268,7 +268,7 @@ TEST (RatioArithmetic, power) {
 		// generate random data
 		int factor = gen();
 		Rational ratio1(gen(), gen());
-		Rational ratio2 = power(ratio1, factor);
+		Rational ratio2 = ratio1.power(factor);
 
 		int powered_num;
 		int powered_den;
@@ -306,7 +306,7 @@ TEST (RatioArithmetic, cosRatio) {
 
 		// generate random data
 		Rational ratio1(gen(), gen()); 
-		Rational ratio2 = cosRatio(ratio1);
+		Rational ratio2 = ratio1.cosRatio();
 
 		// keep the integer part + the three first decimals of the exact solution
 		float cos_exact_result = std::cos(((float)ratio1.getNumerator())/((float)ratio1.getDenominator()));
@@ -339,7 +339,7 @@ TEST (RatioArithmetic, sinRatio) {
 
 		// generate random data
 		Rational ratio1(gen(), gen()); 
-		Rational ratio2 = sinRatio(ratio1);
+		Rational ratio2 = ratio1.sinRatio();
 
 		// keep the integer part + the three first decimals of the exact solution
 		float sin_exact_result = std::sin(((float)ratio1.getNumerator())/((float)ratio1.getDenominator()));
@@ -372,7 +372,7 @@ TEST (RatioArithmetic, expRatio) {
 
 		// generate random data
 		Rational ratio1(gen(), gen()); 
-		Rational ratio2 = expRatio(ratio1);
+		Rational ratio2 = ratio1.expRatio();
 
 		// keep the integer part + the three first decimals of the exact solution
 		float exp_exact_result = std::exp(((float)ratio1.getNumerator())/((float)ratio1.getDenominator()));

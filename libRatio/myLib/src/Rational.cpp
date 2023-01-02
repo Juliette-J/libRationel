@@ -68,14 +68,13 @@ Rational<T> Rational<T>::operator*(const Rational<T> &ratio) const
 }*/
 
 Rational Rational::operator*(const float &f) {
-	Rational f_to_ratio = floatToRatio(f, 7);
-    return ((*this)*f_to_ratio).makeIrreductible();
+	Rational f_to_ratio(floatToRatio(f, 7));
+    return Rational((*this)*f_to_ratio);
 }
 
 
 Rational Rational::operator/(const Rational &ratio) {
-    Rational ratioCopy(ratio);
-    return (*this)* ratioCopy.invRatio();
+    return Rational(this->numerator*ratio.getDenominator(), this->denominator*ratio.getNumerator());
 }
 
 /*
@@ -185,11 +184,20 @@ bool Rational<T>::operator>(const Rational &ratio)
 /* ----- Arithmetics ----- */
 
 Rational Rational::invRatio(){
-    if (this->getNumerator()!=0){
-        return Rational(this->getDenominator(), this->getNumerator());
+    if (this->getNumerator()==0){
+        if(this->getDenominator() == 1) {
+            std::cout << "You reached the infinite !" << std::endl;
+            return Rational(1,0); 
+        }
+        std::cout << "Impossible to inverse numerator = 0. Let you to 0." << std::endl;
+        return Rational(0,1);
+
     }
-    std::cout << "Impossible to inverse numerator = 0" << std::endl;
-    return Rational(0,1);
+    else if (this->getNumerator() < 0) {
+        Rational(-this->getDenominator(), -this->getNumerator());
+    }
+
+    return Rational(this->getDenominator(), this->getNumerator());
 }
 
 /*template<typename T>
@@ -260,6 +268,17 @@ Rational<T> Rational<T>::squareRoot() {
     std::cout << "The square root is not a rational number !" << std::endl;
     return Rational(0,1);
 }*/
+
+Rational Rational::power(const int &power) {
+    if(power < 0) {
+        int pow_numerator = std::pow(this->getDenominator(), -power);
+        int pow_denominator = std::pow(this->getNumerator(), -power);
+        return Rational(pow_numerator, pow_denominator);
+    }
+    int pow_numerator = std::pow(this->getNumerator(), power);
+    int pow_denominator = std::pow(this->getDenominator(), power);
+    return Rational(pow_numerator, pow_denominator);
+}
 
 
 Rational Rational::log(){
@@ -380,50 +399,29 @@ Rational<T> Rational<T>::makeIrreductible() {
 
 /* Methods outside Rational class */
 
-Rational power(const Rational &ratio, const int &power) {
-    if(power < 0) {
-        int pow_numerator = std::pow(ratio.getDenominator(), -power);
-        int pow_denominator = std::pow(ratio.getNumerator(), -power);
-        return Rational(pow_numerator, pow_denominator);
-    }
-    int pow_numerator = std::pow(ratio.getNumerator(), power);
-    int pow_denominator = std::pow(ratio.getDenominator(), power);
-    return Rational(pow_numerator, pow_denominator);
+Rational Rational::cosTaylor() {
+    return (Rational(1,1) - Rational(1,2)*(this->power(2)) + Rational(1,24)*(this->power(4))).makeIrreductible();
 }
 
-Rational cosTaylor(const Rational &ratio) {
-    return (Rational(1,1) - Rational(1,2)*power(ratio, 2) + Rational(1,24)*power(ratio, 4)).makeIrreductible();
+Rational Rational::sinTaylor() {
+    return (*this - Rational(1,6)*(this->power(3)) + Rational(1,120)*(this->power(5))).makeIrreductible();
 }
 
-Rational sinTaylor(const Rational &ratio) {
-    Rational ratioCopy(ratio);
-    return (ratioCopy - Rational(1,6)*power(ratio, 3) + Rational(1,120)*power(ratio, 5)).makeIrreductible();
+Rational Rational::expTaylor() {
+    return (Rational(1,1) + (*this) + Rational(1,2)*(this->power(2)) + Rational(1,6)*(this->power(3)) + Rational(1,24)*(this->power(4)) + Rational(1,120)*(this->power(5))).makeIrreductible();
 }
 
-Rational tanTaylor(const Rational &ratio) {
-    Rational ratioCopy(ratio);
-    Rational n = sinTaylor(ratioCopy);
-    Rational d = cosTaylor(ratioCopy);
-    return n / d;
-}
-
-Rational expTaylor(const Rational &ratio) {
-    Rational ratioCopy(ratio);
-    return (Rational(1,1) + ratioCopy + Rational(1,2)*power(ratio, 2) + Rational(1,6)*power(ratio, 3) + Rational(1,24)*power(ratio, 4) + Rational(1,120)*power(ratio, 5)).makeIrreductible();
-}
-
-Rational cosRatio(const Rational &ratio) {
+Rational Rational::cosRatio() {
     Rational result(1,1);
-    Rational ratioCopy(ratio);
     // Near 0, use Taylor
-    if( Rational(3,4) > ratioCopy ) {
-        result = cosTaylor(ratio);
+    if( Rational(3,4) > (*this) ) {
+        result = this->cosTaylor();
     }
     else {
-        Rational int_part = Rational(ratioCopy.integerPart(), 1); // integer part of ratio
-        Rational decimal_part = Rational(ratioCopy - int_part); // decimal part of ratio
+        Rational int_part = Rational(this->integerPart(), 1); // integer part of the rational
+        Rational decimal_part = Rational((*this) - int_part); // decimal part of the rational
             // cos(integer_part + decimal_part) ~ cos(a + b) = cos(a)cos(b) - sin(a)sin(b)
-        result = cosTaylor(decimal_part)*(std::cos(int_part.getNumerator()))-sinTaylor(decimal_part)*(std::sin(int_part.getNumerator()));
+        result = (decimal_part.cosTaylor())*(std::cos(int_part.getNumerator()))-(decimal_part.sinTaylor())*(std::sin(int_part.getNumerator()));
     }
 
     if(std::abs(((float)result.getNumerator())/((float)result.getDenominator())) > 1) {
@@ -432,18 +430,17 @@ Rational cosRatio(const Rational &ratio) {
     return result;
 }
 
-Rational sinRatio(const Rational &ratio) {
+Rational Rational::sinRatio() {
     Rational result(1,1);
-    Rational ratioCopy(ratio);
     // Near 0, use Taylor
-    if( Rational(3,4) > ratioCopy ) {
-        result = sinTaylor(ratio);
+    if( Rational(3,4) > (*this) ) {
+        result = this->sinTaylor();
     }
     else {
-        Rational int_part = Rational(ratioCopy.integerPart(), 1); // integer part of ratio
-        Rational decimal_part = Rational(ratioCopy - int_part); // decimal part of ratio
+        Rational int_part = Rational(this->integerPart(), 1); // integer part of the rational
+        Rational decimal_part = Rational((*this) - int_part); // decimal part of the rational
             // sin(integer_part + decimal_part) ~ sin(a + b) = sin(a)cos(b) - sin(b)cos(a)
-        result = cosTaylor(decimal_part)*(std::sin(int_part.getNumerator()))-sinTaylor(decimal_part)*(std::cos(int_part.getNumerator()));
+        result = (decimal_part.cosTaylor())*(std::sin(int_part.getNumerator()))-(decimal_part.sinTaylor())*(std::cos(int_part.getNumerator()));
     }
 
     if(std::abs(((float)result.getNumerator())/((float)result.getDenominator())) > 1) {
@@ -452,26 +449,23 @@ Rational sinRatio(const Rational &ratio) {
     return result;
 }
 
-Rational tanRatio(const Rational &ratio){
-     Rational ratioCopy(ratio);
-     
-     Rational n = sinRatio(ratioCopy);
-     Rational d = cosRatio(ratioCopy);
+Rational Rational::tanRatio(){
+     Rational n = this->sinRatio();
+     Rational d = this->cosRatio();
      return n / d;
 }
 
-Rational expRatio(const Rational &ratio) {
-    Rational result(3,4);
-    Rational ratioCopy(ratio);
+Rational Rational::expRatio() {
+    Rational result(1,1);
     // Near 0, use Taylor
-    if( Rational(1,1) > ratio ) {
-        result = expTaylor(ratio);
+    if( Rational(1,1) > (*this) ) {
+        result = this->expTaylor();
     }
     else {
-        Rational int_part = Rational(ratioCopy.integerPart(), 1); // integer part of ratio
-        Rational decimal_part = Rational(ratioCopy - int_part); // decimal part of ratio
+        Rational int_part = Rational(this->integerPart(), 1); // integer part of the rational
+        Rational decimal_part = Rational((*this) - int_part); // decimal part of the rational
             // sin(integer_part + decimal_part) ~ sin(a + b) = sin(a)cos(b) - sin(b)cos(a)
-        result = expTaylor(decimal_part)*(std::exp(int_part.getNumerator()));
+        result = (decimal_part.expTaylor())*(std::exp(int_part.getNumerator()));
     }
     return result;
 }
