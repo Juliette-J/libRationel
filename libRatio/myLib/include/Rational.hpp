@@ -32,7 +32,6 @@ class Rational {
         Rational operator*(const float &f); // extern product
         Rational operator/(const Rational &ratio);
 
-        //ne fonctionne pas
         Rational operator-();
 
         bool operator>=(const Rational &ratio);
@@ -54,10 +53,14 @@ class Rational {
 
         Rational invRatio(); // invert the rational
 
-        // square root pas complet jsp comment mieux faire
-        Rational squareRoot();
+        // square root
+        Rational squareRoot(); 
+        Rational squareRoot2();
 
-        Rational log(); // logarithm
+        // logarithm
+        Rational log(); // 
+        Rational log2(); // logarithm
+
         Rational absolute(); // absolute value
         
 
@@ -72,13 +75,19 @@ class Rational {
 /* ------- Methods outside Rational class ------- */
 
 Rational power(const Rational &ratio, const int &power);
+
 Rational cosTaylor(const Rational &ratio);
 Rational sinTaylor(const Rational &ratio);
+Rational tanTaylor(const Rational &ratio);
 Rational expTaylor(const Rational &ratio);
+
 Rational cosRatio(const Rational &ratio);
 Rational sinRatio(const Rational &ratio);
+Rational tanRatio(const Rational &ratio);
 Rational expRatio(const Rational &ratio);
+
 Rational floatToRatio(const float &x, unsigned int nbIter = 5); // conversion float to rational
+
 std::ostream& operator<< (std::ostream& stream, const Rational &ratio);
 
 

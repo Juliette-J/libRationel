@@ -132,5 +132,25 @@ int main() {
     std::cout << "0.3 to ratio : " << floatToRatio(0.3, 10) << std::endl; // incoherent up to 10 epochs
     std::cout << "0.75 to ratio : " << floatToRatio(0.75, 5) << std::endl; // should be 3/4 ...
 
+    // Square root sqrt(r1)/sqrt(r2)
+    std::cout << "sqrt(2/3) to ratio : " << rati3.squareRoot() << std::endl;
+    std::cout << "sqrt(-2/3) to ratio : " << (-rati3).squareRoot() << std::endl;
+    std::cout << "sqrt(4/9) to ratio : " << Rational(4,9).squareRoot() << std::endl;
+
+    // Square root sqrt(r)
+    std::cout << "sqrt2(2/3) to ratio : " << rati3.squareRoot2() << std::endl;
+    std::cout << "sqrt2(-2/3) to ratio : " << (-rati3).squareRoot2() << std::endl;
+    std::cout << "sqrt2(4/9) to ratio : " << Rational(4,9).squareRoot2() << std::endl;
+
+    // Logarithm log(num)-log(den)
+    std::cout << "log(2/3) to ratio : " << rati3.log() << std::endl;
+    std::cout << "log(-2/3) to ratio : " << (-rati3).log() << std::endl;
+    std::cout << "log(4/9) to ratio : " << Rational(4,9).log() << std::endl;
+
+    // Logarithm log(r)
+    std::cout << "log2(2/3) to ratio : " << rati3.log2() << std::endl;
+    std::cout << "log2(-2/3) to ratio : " << (-rati3).log2() << std::endl;
+    std::cout << "log2(4/9) to ratio : " << Rational(4,9).log2() << std::endl;
+
     return 0;
 }

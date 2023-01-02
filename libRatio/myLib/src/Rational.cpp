@@ -74,7 +74,8 @@ Rational Rational::operator*(const float &f) {
 
 
 Rational Rational::operator/(const Rational &ratio) {
-    return Rational(this->numerator*ratio.getDenominator(), this->denominator*ratio.getNumerator());
+    Rational ratioCopy(ratio);
+    return (*this)* ratioCopy.invRatio();
 }
 
 /*
@@ -184,7 +185,11 @@ bool Rational<T>::operator>(const Rational &ratio)
 /* ----- Arithmetics ----- */
 
 Rational Rational::invRatio(){
-	return Rational(this->getDenominator(), this->getNumerator());
+    if (this->getNumerator()!=0){
+        return Rational(this->getDenominator(), this->getNumerator());
+    }
+    std::cout << "Impossible to inverse numerator = 0" << std::endl;
+    return Rational(0,1);
 }
 
 /*template<typename T>
@@ -193,9 +198,6 @@ Rational<T> Rational<T>::invRatio() {
     
 	return Rational(this->getDenominator(), this->getNumerator());
 }*/
-
-/*pas fini je reflechis encore dessus... parce que sqrt de 3 ca va etre complique*/
-
 
 Rational Rational::squareRoot(){
     int a = this->getNumerator();
@@ -206,23 +208,26 @@ Rational Rational::squareRoot(){
     }
 
     float e = std::sqrt(a);
-    while (e >= 1){
-        e = e-1;
-    }
     float f = std::sqrt(b);
-    while (f >= 1){
-        f = f-1;
-    }
 
-    if (e==0 && f==0){
-        a = std::sqrt(a);
-        b=std::sqrt(b);
-        return Rational(a,b);
-    }
+    Rational rat_e =  floatToRatio(e , 10);
+    Rational rat_f = floatToRatio(f, 10);
+    
+    
+    return rat_e / rat_f;
+    //un peu moins précise, plus couteuse
+}
 
-    /*probleme de conversion car sqrt peut renvoyer floattoRatio*/
-    std::cout << "The square root is not a rational number !" << std::endl;
-    return Rational(0,1);
+Rational Rational::squareRoot2(){
+    int a = this->getNumerator();
+    int b = this-> getDenominator();
+    if (a<0){
+        std::cout << "No square root for negative number !" << std::endl;
+        return Rational(0,1);
+    }
+    float e = sqrt((float)a/b);
+    return  floatToRatio(e , 10);
+     //plus précise, moins couteuse
 }
 
 /*template<typename T>
@@ -255,6 +260,39 @@ Rational<T> Rational<T>::squareRoot() {
     std::cout << "The square root is not a rational number !" << std::endl;
     return Rational(0,1);
 }*/
+
+
+Rational Rational::log(){
+    int a = this->getNumerator();
+    int b = this-> getDenominator();
+    if (a<0){
+        std::cout << "No log for negative number !" << std::endl;
+        return Rational(0,1);
+    }
+
+    float e = std::log(a);
+    float f = std::log(b);
+
+    Rational rat_e =  floatToRatio(e , 10);
+    Rational rat_f = floatToRatio(f, 10);
+    
+    
+    return rat_e - rat_f;
+    /*soit c'est la soustraction qui bloque et fait que l'erreur n'est plus négligeable soit c'est parce qu'on est en int et le rationnel a des long int du coup des données sautent*/
+}
+
+Rational Rational::log2(){
+    int a = this->getNumerator();
+    int b = this-> getDenominator();
+    if (a<0){
+        std::cout << "No log for negative number !" << std::endl;
+        return Rational(0,1);
+    }
+
+    float e = std::log((float)a/b);
+    return  floatToRatio(e , 10);
+    //meilleur moins couteuse, plus facile, plus précise
+}
 
 Rational Rational::absolute(){
     return Rational(std::abs(this->numerator), this->denominator);
@@ -362,6 +400,13 @@ Rational sinTaylor(const Rational &ratio) {
     return (ratioCopy - Rational(1,6)*power(ratio, 3) + Rational(1,120)*power(ratio, 5)).makeIrreductible();
 }
 
+Rational tanTaylor(const Rational &ratio) {
+    Rational ratioCopy(ratio);
+    Rational n = sinTaylor(ratioCopy);
+    Rational d = cosTaylor(ratioCopy);
+    return n / d;
+}
+
 Rational expTaylor(const Rational &ratio) {
     Rational ratioCopy(ratio);
     return (Rational(1,1) + ratioCopy + Rational(1,2)*power(ratio, 2) + Rational(1,6)*power(ratio, 3) + Rational(1,24)*power(ratio, 4) + Rational(1,120)*power(ratio, 5)).makeIrreductible();
@@ -405,6 +450,14 @@ Rational sinRatio(const Rational &ratio) {
         std::cout << "The result is not coherent due to the limitation of memory (integers encoded are too big for this rational)..." << std::endl; 
     }
     return result;
+}
+
+Rational tanRatio(const Rational &ratio){
+     Rational ratioCopy(ratio);
+     
+     Rational n = sinRatio(ratioCopy);
+     Rational d = cosRatio(ratioCopy);
+     return n / d;
 }
 
 Rational expRatio(const Rational &ratio) {
