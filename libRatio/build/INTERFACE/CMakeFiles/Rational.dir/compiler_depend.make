@@ -215,8 +215,11 @@ INTERFACE/CMakeFiles/Rational.dir/src/Rational.cpp.o: ../myLib/src/Rational.cpp 
   /usr/include/c++/12/tr1/poly_hermite.tcc \
   /usr/include/c++/12/tr1/poly_laguerre.tcc \
   /usr/include/c++/12/tr1/riemann_zeta.tcc \
+  ../myLib/include/RatioOperators.hpp \
+  ../myLib/include/Rational.hpp \
   /usr/include/c++/12/cassert \
-  /usr/include/assert.h
+  /usr/include/assert.h \
+  ../myLib/include/RatioMethods.hpp
 
 
 /usr/include/assert.h:
@@ -439,7 +442,11 @@ INTERFACE/CMakeFiles/Rational.dir/src/Rational.cpp.o: ../myLib/src/Rational.cpp 
 
 /usr/include/bits/pthreadtypes-arch.h:
 
+../myLib/include/RatioMethods.hpp:
+
 /usr/include/bits/long-double.h:
+
+../myLib/include/RatioOperators.hpp:
 
 /usr/include/c++/12/bits/exception_defines.h:
 

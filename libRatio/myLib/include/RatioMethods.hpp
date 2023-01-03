@@ -14,7 +14,7 @@
 /* ----- Arithmetics ----- */
 
 template<typename T>
-Rational<T> Rational<T>::invRatio(){
+constexpr Rational<T> Rational<T>::invRatio(){
     //assert(this->numerateur==0 && "error: Rational::invRatio numerator null");
 
     /* if (this->getNumerator()==0){
@@ -34,7 +34,7 @@ Rational<T> Rational<T>::invRatio(){
 }
 
 template<typename T>
-Rational<T> Rational<T>::squareRoot(){
+constexpr Rational<T> Rational<T>::squareRoot(){
     //assert(this->denominator==0 && "error: Rational::squareRoot denomerator null");
     int a = this->getNumerator();
     int b = this-> getDenominator();
@@ -55,7 +55,7 @@ Rational<T> Rational<T>::squareRoot(){
 }
 
 template<typename T>
-Rational<T> Rational<T>::squareRoot2(){
+constexpr Rational<T> Rational<T>::squareRoot2(){
     //assert(this->denominator==0 && "error: Rational::squareRoot denomerator null");
     int a = this->getNumerator();
     int b = this-> getDenominator();
@@ -69,7 +69,7 @@ Rational<T> Rational<T>::squareRoot2(){
 }
 
 template<typename T>
-Rational<T> Rational<T>::power(const int &power) {
+constexpr Rational<T> Rational<T>::power(const int &power) {
     if(power < 0) {
         int pow_numerator = std::pow(this->getDenominator(), -power);
         int pow_denominator = std::pow(this->getNumerator(), -power);
@@ -81,7 +81,7 @@ Rational<T> Rational<T>::power(const int &power) {
 }
 
 template<typename T>
-Rational<T> Rational<T>::log(){
+constexpr Rational<T> Rational<T>::log(){
     int a = this->getNumerator();
     int b = this-> getDenominator();
     if (a<0){
@@ -101,7 +101,7 @@ Rational<T> Rational<T>::log(){
 }
 
 template<typename T>
-Rational<T> Rational<T>::log2(){
+constexpr Rational<T> Rational<T>::log2(){
     int a = this->getNumerator();
     int b = this-> getDenominator();
     if (a<0){
@@ -116,13 +116,13 @@ Rational<T> Rational<T>::log2(){
 
 
 template<typename T>
-Rational<T> Rational<T>::absolute(){
+constexpr Rational<T> Rational<T>::absolute(){
     //assert(this->denominator==0 && "error: Rational::absolute numerator null");
     return Rational(std::abs(this->numerator), this->denominator);
 }
 
 template<typename T>
-int Rational<T>::integerPart(){
+constexpr int Rational<T>::integerPart(){
     int res = 0;
     int a = abs(this->getNumerator());
     if (this->getDenominator() > a){
@@ -145,22 +145,22 @@ int Rational<T>::integerPart(){
 }
 
 template<typename T>
-Rational<T> Rational<T>::cosTaylor() {
+constexpr Rational<T> Rational<T>::cosTaylor() {
     return (Rational(1,1) - Rational(1,2)*(this->power(2)) + Rational(1,24)*(this->power(4))).makeIrreductible();
 }
 
 template<typename T>
-Rational<T> Rational<T>::sinTaylor() {
+constexpr Rational<T> Rational<T>::sinTaylor() {
     return (*this - Rational(1,6)*(this->power(3)) + Rational(1,120)*(this->power(5))).makeIrreductible();
 }
 
 template<typename T>
-Rational<T> Rational<T>::expTaylor() {
+constexpr Rational<T> Rational<T>::expTaylor() {
     return (Rational(1,1) + (*this) + Rational(1,2)*(this->power(2)) + Rational(1,6)*(this->power(3)) + Rational(1,24)*(this->power(4)) + Rational(1,120)*(this->power(5))).makeIrreductible();
 }
 
 template<typename T>
-Rational<T> Rational<T>::cosRatio() {
+constexpr Rational<T> Rational<T>::cosRatio() {
     Rational result(1,1);
     // Near 0, use Taylor
     if( Rational(3,4) > (*this) ) {
@@ -180,7 +180,7 @@ Rational<T> Rational<T>::cosRatio() {
 }
 
 template<typename T>
-Rational<T> Rational<T>::sinRatio() {
+constexpr Rational<T> Rational<T>::sinRatio() {
     Rational result(1,1);
     // Near 0, use Taylor
     if( Rational(3,4) > (*this) ) {
@@ -200,14 +200,14 @@ Rational<T> Rational<T>::sinRatio() {
 }
 
 template<typename T>
-Rational<T> Rational<T>::tanRatio(){
+constexpr Rational<T> Rational<T>::tanRatio(){
      Rational n = this->sinRatio();
      Rational d = this->cosRatio();
      return n / d;
 }
 
 template<typename T>
-Rational<T> Rational<T>::expRatio() {
+constexpr Rational<T> Rational<T>::expRatio() {
     Rational result(1,1);
     // Near 0, use Taylor
     if( Rational(1,1) > (*this) ) {
@@ -225,7 +225,7 @@ Rational<T> Rational<T>::expRatio() {
 /* ----- Manipulations ----- */
 
 template<typename T>
-Rational<T> Rational<T>::makeIrreductible(){
+constexpr Rational<T> Rational<T>::makeIrreductible(){
     //assert(this->denominator==0 && "error: Rational::makeIrreductible denominator null");
     int numerator = this->getNumerator();
     int denominator = this-> getDenominator();
@@ -240,7 +240,7 @@ Rational<T> Rational<T>::makeIrreductible(){
 /* ---------- Methods outside Rational class ---------- */
 
 template<typename T>
-Rational<T> floatToRatio(const float &x, unsigned int nbIter) {
+constexpr Rational<T> floatToRatio(const float &x, unsigned int nbIter) {
     // keep the sign of x
     float sign;
     (x<0) ? sign = -1.0 : sign = 1.0;
@@ -268,7 +268,7 @@ Rational<T> floatToRatio(const float &x, unsigned int nbIter) {
 }
 
 template<typename T>
-std::ostream& operator<< (std::ostream& stream, const Rational<T> &ratio) {
+constexpr std::ostream& operator<< (std::ostream& stream, const Rational<T> &ratio) {
 	if(ratio.getNumerator() == 0 && ratio.getDenominator() == 0){
 		stream << "Not initialized yet -> 0/0 IMPOSSIBLE";
 		return stream;
@@ -288,7 +288,7 @@ std::ostream& operator<< (std::ostream& stream, const Rational<T> &ratio) {
 /* ---------------- Extern product for float---------------- */
 
 template<typename T>
-Rational<T> extProductReal(const float &f, const Rational<T> &ratio) {
+constexpr Rational<T> extProductReal(const float &f, const Rational<T> &ratio) {
     Rational fToRatio(floatToRatio<T>(f));
     return fToRatio*ratio;
 }
