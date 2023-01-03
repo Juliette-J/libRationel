@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
   "CMakeFiles/Rational.dir/src/Rational.cpp.o"
-  "CMakeFiles/Rational.dir/src/Rational.cpp.o.d"
   "libRational.a"
   "libRational.pdb"
 )

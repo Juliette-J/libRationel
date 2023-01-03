@@ -50,7 +50,9 @@ constexpr Rational<T> Rational<T>::operator*(const float &f) {
 template<typename T>
 constexpr Rational<T> Rational<T>::operator/(const Rational &ratio) {
     //assert(ratio.getDenominator() == 0 || *this->denominator && "error: Rational::operator* denominator null");
-    return Rational(this->numerator*ratio.getDenominator(), this->denominator*ratio.getNumerator());
+    //return Rational(this->numerator*ratio.getDenominator(), this->denominator*ratio.getNumerator());
+    Rational ratioCopy(ratio);
+    return (*this)* ratioCopy.invRatio();
 }
 
 /* ----------- Comparison ----------- */
@@ -94,7 +96,7 @@ constexpr bool Rational<T>::operator<(const Rational &ratio)
 template<typename T>
 constexpr bool Rational<T>::operator<=(const Rational &ratio)
 {
-    return !(*this<ratio && *this==ratio);
+    return (*this<ratio || *this==ratio);
 }
 
 

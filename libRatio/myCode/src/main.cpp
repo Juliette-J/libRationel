@@ -11,6 +11,7 @@ int main() {
     Rational rat3(5,9);
     Rational rat4 = rat3;
     Rational rat0(rat2);
+    Rational rati(1,-3);
 
 
     // Display and constructors
@@ -32,9 +33,11 @@ int main() {
     std::cout << "rat1-rat2 : " <<  rat1 - rat2 << std::endl;
     std::cout << "rat1*rat2 : " <<  rat1 * rat2 << std::endl;
     std::cout << "rat1/rat2 : " <<  rat1 / rat2 << std::endl;
+    std::cout << "rat1/rati : " <<  rat1 / rati<< std::endl;
+    std::cout << "rati/rat2 : " <<  rati / rat2 << std::endl;
 
     // minus
-    Rational rati(1,-3);
+    
     std::cout << rati << std::endl;
     std::cout << "moins unaire : " << -rati << std::endl;
     Rational rati2(7,3);
@@ -79,8 +82,12 @@ int main() {
     // cos and sin
     std::cout << "cos(2) : " << Rational(2,1).cosRatio() << std::endl;
     std::cout << "sin(0.5) : " << Rational(1,2).sinRatio() << std::endl;
-    std::cout << "cos(rati) : " << rati.cosRatio() << std::endl;
     std::cout << "sin(rati2) : " << rati2.sinRatio() << std::endl;
+    std::cout << "cos(rati) : " << rati.cosRatio() << std::endl;
+    std::cout << "sin(rati) : " << rati.sinRatio() << std::endl;
+    std::cout << "sin(rati)/cos(rati) : " << rati.sinRatio()/rati.cosRatio() << std::endl;
+    std::cout << "tan(rati) : " << rati.tanRatio() << std::endl;
+    std::cout << "tan(rati2) : " << rati2.tanRatio() << std::endl;
 
     // exponential
     std::cout << "exp(1) : " << Rational(1,1).expRatio() << std::endl;

@@ -1,4 +1,4 @@
-# Install script for directory: /home/juliettej/Documents/libRationel/libRatio/myLib
+# Install script for directory: /home/charline/Documents/IMAC/2A/IMAC2-PROG/Projet_PROG_MATHS/libRatio/myLib
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -29,7 +29,7 @@ endif()
 
 # Install shared libraries without execute permission?
 if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
-  set(CMAKE_INSTALL_SO_NO_EXE "0")
+  set(CMAKE_INSTALL_SO_NO_EXE "1")
 endif()
 
 # Is this installation the result of a crosscompile?
@@ -37,21 +37,20 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "FALSE")
 endif()
 
-# Set default install directory permissions.
-if(NOT DEFINED CMAKE_OBJDUMP)
-  set(CMAKE_OBJDUMP "/usr/bin/objdump")
-endif()
-
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/usr/local/include/Rational/Rational.hpp")
+   "/usr/local/include/Rational/RatioMethods.hpp;/usr/local/include/Rational/RatioOperators.hpp;/usr/local/include/Rational/Rational.hpp")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/local/include/Rational" TYPE FILE FILES "/home/juliettej/Documents/libRationel/libRatio/myLib/include/Rational.hpp")
+file(INSTALL DESTINATION "/usr/local/include/Rational" TYPE FILE FILES
+    "/home/charline/Documents/IMAC/2A/IMAC2-PROG/Projet_PROG_MATHS/libRatio/myLib/include/RatioMethods.hpp"
+    "/home/charline/Documents/IMAC/2A/IMAC2-PROG/Projet_PROG_MATHS/libRatio/myLib/include/RatioOperators.hpp"
+    "/home/charline/Documents/IMAC/2A/IMAC2-PROG/Projet_PROG_MATHS/libRatio/myLib/include/Rational.hpp"
+    )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -63,12 +62,12 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/local/lib" TYPE STATIC_LIBRARY FILES "/home/juliettej/Documents/libRationel/libRatio/build/INTERFACE/libRational.a")
+file(INSTALL DESTINATION "/usr/local/lib" TYPE STATIC_LIBRARY FILES "/home/charline/Documents/IMAC/2A/IMAC2-PROG/Projet_PROG_MATHS/libRatio/build/INTERFACE/libRational.a")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/juliettej/Documents/libRationel/libRatio/build/INTERFACE/doc/cmake_install.cmake")
+  include("/home/charline/Documents/IMAC/2A/IMAC2-PROG/Projet_PROG_MATHS/libRatio/build/INTERFACE/doc/cmake_install.cmake")
 
 endif()
 

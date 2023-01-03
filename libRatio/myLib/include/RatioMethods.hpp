@@ -129,7 +129,7 @@ constexpr int Rational<T>::integerPart(){
         return 0;
     }
     else if (this->getDenominator() == a){
-        return 1;
+        res=1;
     }
     else {
         int e = a;
@@ -201,9 +201,9 @@ constexpr Rational<T> Rational<T>::sinRatio() {
 
 template<typename T>
 constexpr Rational<T> Rational<T>::tanRatio(){
-     Rational n = this->sinRatio();
-     Rational d = this->cosRatio();
-     return n / d;
+     Rational sin = this->sinRatio();
+     Rational cos = this->cosRatio();
+     return sin / cos;
 }
 
 template<typename T>
