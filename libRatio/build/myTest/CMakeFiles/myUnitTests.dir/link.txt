@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/myUnitTests.dir/src/sample_test.cpp.o -o myUnitTests  ../INTERFACE/libRational.a /usr/lib64/libgtest_main.so.1.11.0 /usr/lib64/libgtest.so.1.11.0 
