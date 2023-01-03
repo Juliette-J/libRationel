@@ -17,101 +17,90 @@ template<typename T>
 constexpr Rational<T> Rational<T>::invRatio(){
     //assert(this->numerateur==0 && "error: Rational::invRatio numerator null");
 
-    /* if (this->getNumerator()==0){
-        if(this->getDenominator() == 1) {
-            std::cout << "You reached the infinite !" << std::endl;
-            return Rational(1,0); 
-        }
-        std::cout << "Impossible to inverse numerator = 0. Let you to 0." << std::endl;
-        return Rational(0,1);
-
-    }
-    else if (this->getNumerator() < 0) {
-        Rational(-this->getDenominator(), -this->getNumerator());
-    } */
-
     return Rational(this->getDenominator(), this->getNumerator());
 }
 
 template<typename T>
 constexpr Rational<T> Rational<T>::squareRoot(){
     //assert(this->denominator==0 && "error: Rational::squareRoot denomerator null");
-    int a = this->getNumerator();
-    int b = this-> getDenominator();
-    if (a<0){
-        std::cout << "No square root for negative number !" << std::endl;
+    T num = this->getNumerator();
+    T den = this-> getDenominator();
+    if (num < 0){
+        std::cout << "No square root for negative number ! Let you to 0." << std::endl;
         return Rational(0,1);
     }
 
-    float e = std::sqrt(a);
-    float f = std::sqrt(b);
+    float sqrtNum = std::sqrt(num);
+    float sqrtDen = std::sqrt(den);
 
-    Rational rat_e =  floatToRatio<T>(e , 10);
-    Rational rat_f = floatToRatio<T>(f, 10);
+    Rational sqrtNumRatio(floatToRatio<T>(sqrtNum , 10));
+    Rational sqrtDenRatio(floatToRatio<T>(sqrtDen, 10));
     
     
-    return rat_e / rat_f;
-    //un peu moins précise, plus couteuse
+    return Rational(sqrtNumRatio/sqrtDenRatio);
+    // less accurate, more costly
 }
 
 template<typename T>
 constexpr Rational<T> Rational<T>::squareRoot2(){
     //assert(this->denominator==0 && "error: Rational::squareRoot denomerator null");
-    int a = this->getNumerator();
-    int b = this-> getDenominator();
-    if (a<0){
-        std::cout << "No square root for negative number !" << std::endl;
+    T num = this->getNumerator();
+    T den = this-> getDenominator();
+    if (num < 0){
+        std::cout << "No square root for negative number ! Let you to 0." << std::endl;
         return Rational(0,1);
     }
-    float e = sqrt((float)a/b);
-    return  floatToRatio<T>(e , 10);
-     //plus précise, moins couteuse
+    float sqrtRatio = std::sqrt(((float)num)/((float)den));
+    return  Rational(floatToRatio<T>(sqrtRatio , 10));
+     // more acurate, less costly
 }
 
 template<typename T>
-constexpr Rational<T> Rational<T>::power(const int &power) {
-    if(power < 0) {
-        int pow_numerator = std::pow(this->getDenominator(), -power);
-        int pow_denominator = std::pow(this->getNumerator(), -power);
-        return Rational(pow_numerator, pow_denominator);
+constexpr Rational<T> Rational<T>::power(const int &factor) {
+    T powNum;
+    T powDen;
+    if(factor < 0) {
+        powNum = std::pow(this->getDenominator(), -factor);
+        powDen = std::pow(this->getNumerator(), -factor);
+        return Rational(powNum, powDen);
     }
-    int pow_numerator = std::pow(this->getNumerator(), power);
-    int pow_denominator = std::pow(this->getDenominator(), power);
-    return Rational(pow_numerator, pow_denominator);
+    powNum = std::pow(this->getNumerator(), factor);
+    powDen = std::pow(this->getDenominator(), factor);
+    return Rational(powNum, powDen);
 }
 
 template<typename T>
 constexpr Rational<T> Rational<T>::log(){
-    int a = this->getNumerator();
-    int b = this-> getDenominator();
-    if (a<0){
-        std::cout << "No log for negative number !" << std::endl;
+    T num = this->getNumerator();
+    T den  = this-> getDenominator();
+    if (num < 0){
+        std::cout << "No log for negative number ! Let you to 0." << std::endl;
         return Rational(0,1);
     }
 
-    float e = std::log(a);
-    float f = std::log(b);
+    float logNum = std::log(num);
+    float logDen = std::log(den);
 
-    Rational rat_e =  floatToRatio<T>(e , 10);
-    Rational rat_f = floatToRatio<T>(f, 10);
+    Rational logNumRatio(floatToRatio<T>(logNum , 5));
+    Rational logDenRatio(floatToRatio<T>(logDen, 5));
     
     
-    return rat_e - rat_f;
+    return logNumRatio - logDenRatio;
     //soit c'est la soustraction qui bloque et fait que l'erreur n'est plus négligeable soit c'est parce qu'on est en int et le rationnel a des long int du coup des données sautent
 }
 
 template<typename T>
 constexpr Rational<T> Rational<T>::log2(){
-    int a = this->getNumerator();
-    int b = this-> getDenominator();
-    if (a<0){
-        std::cout << "No log for negative number !" << std::endl;
+    T num = this->getNumerator();
+    T den = this->getDenominator();
+    if (num < 0){
+        std::cout << "No log for negative number ! Let you to 0." << std::endl;
         return Rational(0,1);
     }
 
-    float e = std::log((float)a/b);
-    return  floatToRatio<T>(e , 10);
-    //meilleur moins couteuse, plus facile, plus précise
+    float logRatio = std::log(((float)num)/((float)den));
+    return  floatToRatio<T>(logRatio , 5);
+    // better : more accurate, less costly, easier
 }
 
 
@@ -123,103 +112,106 @@ constexpr Rational<T> Rational<T>::absolute(){
 
 template<typename T>
 constexpr int Rational<T>::integerPart(){
-    int res = 0;
-    int a = abs(this->getNumerator());
-    if (this->getDenominator() > a){
+    T intPart = 0;
+    T numAbs = std::abs(this->getNumerator());
+    // rational < 1 -> integer part = 0
+    if (this->getDenominator() > numAbs){
         return 0;
     }
-    else if (this->getDenominator() == a){
-        res=1;
+    // rational = 1 -> integer part = 1
+    else if (this->getDenominator() == numAbs){
+        intPart = 1;
     }
     else {
-        int e = a;
-        while(e >= this->getDenominator()){
-            e = e-this->getDenominator();
-            res += 1;
+        T numSubstract = numAbs;
+        while(numSubstract >= this->getDenominator()){
+            numSubstract -= this->getDenominator();
+            intPart += 1;
         }
     }
-    if(a != this->getNumerator()){
-        res = -res;
+    // sign of the integer part
+    if(numAbs != this->getNumerator()){
+        intPart = -intPart;
     }
-    return res;
+    return intPart;
 }
 
 template<typename T>
 constexpr Rational<T> Rational<T>::cosTaylor() {
-    return (Rational(1,1) - Rational(1,2)*(this->power(2)) + Rational(1,24)*(this->power(4))).makeIrreductible();
+    return Rational(1,1) - Rational(1,2)*(this->power(2)) + Rational(1,24)*(this->power(4));
 }
 
 template<typename T>
 constexpr Rational<T> Rational<T>::sinTaylor() {
-    return (*this - Rational(1,6)*(this->power(3)) + Rational(1,120)*(this->power(5))).makeIrreductible();
+    return *this - Rational(1,6)*(this->power(3)) + Rational(1,120)*(this->power(5));
 }
 
 template<typename T>
 constexpr Rational<T> Rational<T>::expTaylor() {
-    return (Rational(1,1) + (*this) + Rational(1,2)*(this->power(2)) + Rational(1,6)*(this->power(3)) + Rational(1,24)*(this->power(4)) + Rational(1,120)*(this->power(5))).makeIrreductible();
+    return Rational(1,1) + (*this) + Rational(1,2)*(this->power(2)) + Rational(1,6)*(this->power(3)) + Rational(1,24)*(this->power(4)) + Rational(1,120)*(this->power(5));
 }
 
 template<typename T>
 constexpr Rational<T> Rational<T>::cosRatio() {
-    Rational result(1,1);
+    Rational cosRational(1,1);
     // Near 0, use Taylor
-    if( Rational(3,4) > (*this) ) {
-        result = this->cosTaylor();
+    if( Rational(1,1) > (*this) ) {
+        cosRational = this->cosTaylor();
     }
     else {
-        Rational int_part = Rational(this->integerPart(), 1); // integer part of the rational
-        Rational decimal_part = Rational((*this) - int_part); // decimal part of the rational
+        Rational intPart = Rational(this->integerPart(), 1); // integer part of the rational
+        Rational decimalPart = Rational((*this) - intPart); // decimal part of the rational
             // cos(integer_part + decimal_part) ~ cos(a + b) = cos(a)cos(b) - sin(a)sin(b)
-        result = (decimal_part.cosTaylor())*(std::cos(int_part.getNumerator()))-(decimal_part.sinTaylor())*(std::sin(int_part.getNumerator()));
+        cosRational = (decimalPart.cosTaylor())*(std::cos(intPart.getNumerator()))-(decimalPart.sinTaylor())*(std::sin(intPart.getNumerator()));
     }
 
-    if(std::abs(((float)result.getNumerator())/((float)result.getDenominator())) > 1) {
+    if(std::abs(((float)cosRational.getNumerator())/((float)cosRational.getDenominator())) > 1) {
         std::cout << "The result is not coherent due to the limitation of memory (integers encoded are too big for this rational)..." << std::endl; 
     }
-    return result;
+    return cosRational;
 }
 
 template<typename T>
 constexpr Rational<T> Rational<T>::sinRatio() {
-    Rational result(1,1);
+    Rational sinRational(1,1);
     // Near 0, use Taylor
-    if( Rational(3,4) > (*this) ) {
-        result = this->sinTaylor();
+    if( Rational(1,1) > (*this) ) {
+        sinRational = this->sinTaylor();
     }
     else {
-        Rational int_part = Rational(this->integerPart(), 1); // integer part of the rational
-        Rational decimal_part = Rational((*this) - int_part); // decimal part of the rational
+        Rational intPart = Rational(this->integerPart(), 1); // integer part of the rational
+        Rational decimalPart = Rational((*this) - intPart); // decimal part of the rational
             // sin(integer_part + decimal_part) ~ sin(a + b) = sin(a)cos(b) - sin(b)cos(a)
-        result = (decimal_part.cosTaylor())*(std::sin(int_part.getNumerator()))-(decimal_part.sinTaylor())*(std::cos(int_part.getNumerator()));
+        sinRational = (decimalPart.cosTaylor())*(std::sin(intPart.getNumerator()))-(decimalPart.sinTaylor())*(std::cos(intPart.getNumerator()));
     }
 
-    if(std::abs(((float)result.getNumerator())/((float)result.getDenominator())) > 1) {
+    if(std::abs(((float)sinRational.getNumerator())/((float)sinRational.getDenominator())) > 1) {
         std::cout << "The result is not coherent due to the limitation of memory (integers encoded are too big for this rational)..." << std::endl; 
     }
-    return result;
+    return sinRational;
 }
 
 template<typename T>
 constexpr Rational<T> Rational<T>::tanRatio(){
-     Rational sin = this->sinRatio();
-     Rational cos = this->cosRatio();
-     return sin / cos;
+     Rational sin(this->sinRatio());
+     Rational cos(this->cosRatio());
+     return sin/cos;
 }
 
 template<typename T>
 constexpr Rational<T> Rational<T>::expRatio() {
-    Rational result(1,1);
+    Rational expRational(1,1);
     // Near 0, use Taylor
     if( Rational(1,1) > (*this) ) {
-        result = this->expTaylor();
+        expRational = this->expTaylor();
     }
     else {
-        Rational int_part = Rational(this->integerPart(), 1); // integer part of the rational
-        Rational decimal_part = Rational((*this) - int_part); // decimal part of the rational
+        Rational intPart = Rational(this->integerPart(), 1); // integer part of the rational
+        Rational decimalPart = Rational((*this) - intPart); // decimal part of the rational
             // sin(integer_part + decimal_part) ~ sin(a + b) = sin(a)cos(b) - sin(b)cos(a)
-        result = (decimal_part.expTaylor())*(std::exp(int_part.getNumerator()));
+        expRational = (decimalPart.expTaylor())*(std::exp(intPart.getNumerator()));
     }
-    return result;
+    return expRational;
 }
 
 /* ----- Manipulations ----- */
@@ -227,8 +219,8 @@ constexpr Rational<T> Rational<T>::expRatio() {
 template<typename T>
 constexpr Rational<T> Rational<T>::makeIrreductible(){
     //assert(this->denominator==0 && "error: Rational::makeIrreductible denominator null");
-    int numerator = this->getNumerator();
-    int denominator = this-> getDenominator();
+    T numerator = this->getNumerator();
+    T denominator = this-> getDenominator();
 
     if(std::abs(std::gcd(numerator, denominator)) != 1) {
         numerator /= std::abs(std::gcd(numerator, denominator));
@@ -263,7 +255,7 @@ constexpr Rational<T> floatToRatio(const float &x, unsigned int nbIter) {
 
     // integer part
     else {
-        return Rational((int)(sign*(std::floor(absX))), 1) + floatToRatio<T>(sign*(absX-(std::floor(absX))), nbIter-1);
+        return Rational((T)(sign*(std::floor(absX))), 1) + floatToRatio<T>(sign*(absX-(std::floor(absX))), nbIter-1);
     }
 }
 

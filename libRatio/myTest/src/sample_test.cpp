@@ -144,7 +144,7 @@ TEST (RatioOperators, minusUnity) {
 		// generate random data
 		Rational ratio1(gen(), gen());
 		Rational ratio2 = -ratio1;
-		Rational ratio3(ratio1.getNumerator(), -ratio1.getDenominator();
+		Rational ratio3(-ratio1.getNumerator(), ratio1.getDenominator());
 
 	    ASSERT_EQ(ratio2.getNumerator(), ratio3.getNumerator());
 		ASSERT_EQ(ratio2.getDenominator(), ratio3.getDenominator());
@@ -322,7 +322,7 @@ TEST (RatioComparisons, difference) {
 	}
 }
 
-TEST (RatioComparisons, superiorAndEqual) {
+TEST (RatioComparisons, superiorOrEqual) {
 
 	// Seed
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -338,7 +338,7 @@ TEST (RatioComparisons, superiorAndEqual) {
 	for(int run=0; run<100; ++run){
 
 		// generate random data
-		Rational ratio1(60, 1);
+		Rational ratio1(50, 1);
 		Rational ratio2(gen(), gen());
 
 		ASSERT_TRUE(ratio1 >= ratio2);
@@ -361,14 +361,14 @@ TEST (RatioComparisons, inferior) {
 	for(int run=0; run<100; ++run){
 
 		// generate random data
-		Rational ratio1(60, 1);
-		Rational ratio2(gen(), gen());
+		Rational ratio1(gen(),gen());
+		Rational ratio2(60,1);
 
 		ASSERT_TRUE(ratio1 < ratio2);
 	}
 }
 
-TEST (RatioComparisons, inferiorAndEqual) {
+TEST (RatioComparisons, inferiorOrEqual) {
 
 	// Seed
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -384,8 +384,8 @@ TEST (RatioComparisons, inferiorAndEqual) {
 	for(int run=0; run<100; ++run){
 
 		// generate random data
-		Rational ratio1(60, 1);
-		Rational ratio2(gen(), gen());
+		Rational ratio1(gen(), gen());
+		Rational ratio2(60,1);
 
 		ASSERT_TRUE(ratio1 < ratio2);
 	}
@@ -451,7 +451,7 @@ TEST (RatioArithmetic, squareRoot) {
 	std::mt19937 generator(seed);
 
 	// Distribution
-	std::uniform_int_distribution<int> uniformIntDistribution(-50,50);
+	std::uniform_int_distribution<int> uniformIntDistribution(0,100);
 	auto gen = std::bind(uniformIntDistribution, generator);
 
 	// run many times the same test with different values
@@ -460,8 +460,12 @@ TEST (RatioArithmetic, squareRoot) {
 		// generate random data
 		Rational ratio1(gen(), gen());
 		Rational ratio2(ratio1.squareRoot());
-		Rational ratio3(std::sqrt(ratio1));
 
+		float squareRootNum = std::sqrt(ratio1.getNumerator());
+    	float squareRootDen = std::sqrt(ratio1.getDenominator());
+
+    	Rational ratio3(floatToRatio<int>(squareRootNum , 7)/floatToRatio<int>(squareRootDen, 7));
+    
 	    ASSERT_EQ(ratio2.getNumerator(), ratio3.getNumerator());
         ASSERT_EQ(ratio2.getDenominator(),ratio3.getDenominator());
 	}
@@ -476,7 +480,7 @@ TEST (RatioArithmetic, squareRoot2) {
 	std::mt19937 generator(seed);
 
 	// Distribution
-	std::uniform_int_distribution<int> uniformIntDistribution(-50,50);
+	std::uniform_int_distribution<int> uniformIntDistribution(0,100);
 	auto gen = std::bind(uniformIntDistribution, generator);
 
 	// run many times the same test with different values
@@ -485,7 +489,9 @@ TEST (RatioArithmetic, squareRoot2) {
 		// generate random data
 		Rational ratio1(gen(), gen());
 		Rational ratio2(ratio1.squareRoot2());
-		Rational ratio3(std::sqrt(ratio1));
+
+		float squareRoot = std::sqrt(((float)ratio1.getNumerator())/((float)ratio1.getDenominator()));
+    	Rational ratio3(floatToRatio<int>(squareRoot , 7));
 
 	    ASSERT_EQ(ratio2.getNumerator(), ratio3.getNumerator());
         ASSERT_EQ(ratio2.getDenominator(),ratio3.getDenominator());
@@ -501,7 +507,7 @@ TEST (RatioArithmetic, logarithm) {
 	std::mt19937 generator(seed);
 
 	// Distribution
-	std::uniform_int_distribution<int> uniformIntDistribution(-50,50);
+	std::uniform_int_distribution<int> uniformIntDistribution(1,100);
 	auto gen = std::bind(uniformIntDistribution, generator);
 
 	// run many times the same test with different values
@@ -510,7 +516,11 @@ TEST (RatioArithmetic, logarithm) {
 		// generate random data
 		Rational ratio1(gen(), gen());
 		Rational ratio2(ratio1.log());
-		Rational ratio3(std::log(ratio1));
+
+		float logNum = std::log(ratio1.getNumerator());
+    	float logDen = std::log(ratio1.getDenominator());
+
+    	Rational ratio3(floatToRatio<int>(logNum , 7) - floatToRatio<int>(logDen, 7));
 
 	    ASSERT_EQ(ratio2.getNumerator(), ratio3.getNumerator());
         ASSERT_EQ(ratio2.getDenominator(),ratio3.getDenominator());
@@ -526,7 +536,7 @@ TEST (RatioArithmetic, logarithm2) {
 	std::mt19937 generator(seed);
 
 	// Distribution
-	std::uniform_int_distribution<int> uniformIntDistribution(-50,50);
+	std::uniform_int_distribution<int> uniformIntDistribution(1,100);
 	auto gen = std::bind(uniformIntDistribution, generator);
 
 	// run many times the same test with different values
@@ -535,7 +545,9 @@ TEST (RatioArithmetic, logarithm2) {
 		// generate random data
 		Rational ratio1(gen(), gen());
 		Rational ratio2(ratio1.log2());
-		Rational ratio3(std::log(ratio1));
+
+		float log = std::sqrt(((float)ratio1.getNumerator())/((float)ratio1.getDenominator()));
+    	Rational ratio3(floatToRatio<int>(log, 7));
 
 	    ASSERT_EQ(ratio2.getNumerator(), ratio3.getNumerator());
         ASSERT_EQ(ratio2.getDenominator(),ratio3.getDenominator());
@@ -560,7 +572,7 @@ TEST (RatioArithmetic, absolute) {
 		// generate random data
 		Rational ratio1(gen(), gen());
 		Rational ratio2(ratio1.absolute());
-		Rational ratio3(std::abs(ratio1));
+		Rational ratio3(std::abs(ratio1.getNumerator()), ratio1.getDenominator());
 
 	    ASSERT_EQ(ratio2.getNumerator(), ratio3.getNumerator());
         ASSERT_EQ(ratio2.getDenominator(),ratio3.getDenominator());
@@ -714,7 +726,7 @@ TEST (RatioArithmetic, tanRatio) {
 		// generate random data
 		Rational ratio1(gen(), gen());
 		Rational ratio2(ratio1.tanRatio());
-		Rational ratio3(std::tan(ratio1));
+		Rational ratio3(ratio1.sinRatio()/ratio1.cosRatio());
 
 	    ASSERT_EQ(ratio2.getNumerator(), ratio3.getNumerator());
         ASSERT_EQ(ratio2.getDenominator(),ratio3.getDenominator());

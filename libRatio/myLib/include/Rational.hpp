@@ -47,7 +47,7 @@ class Rational {
         constexpr Rational squareRoot(); // square root
         constexpr Rational squareRoot2();
 
-        constexpr Rational power(const int &power); // power
+        constexpr Rational power(const int &factor); // power
 
         constexpr Rational log(); // logarithm
         constexpr Rational log2(); // logarithm
