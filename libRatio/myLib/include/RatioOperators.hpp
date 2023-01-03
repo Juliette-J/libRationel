@@ -13,10 +13,6 @@
 
 /* ----------- Aritmetic ----------- */
 
-/// \brief Operation+ to add two rational numbers together
-/// \param ratio a constant rational number
-/// \return a rational 
-
 template<typename T>
 constexpr Rational<T> Rational<T>::operator+(const Rational &ratio) {
     assert(ratio.getDenominator() == 0 && "error: Rational::operator+ denominator null");
@@ -26,10 +22,6 @@ constexpr Rational<T> Rational<T>::operator+(const Rational &ratio) {
     T denominator = this->denominator*ratio.getDenominator();
 	return Rational(numerator, denominator);
 }
-
-/// \brief Operation- to subtract a rational number to a rational number
-/// \param ratio a constant rational number
-/// \return a rational 
 
 template<typename T>
 constexpr Rational<T> Rational<T>::operator-(const Rational &ratio) {
@@ -41,9 +33,6 @@ constexpr Rational<T> Rational<T>::operator-(const Rational &ratio) {
 	return Rational(numerator, denominator);
 }
 
-/// \brief Operation- to make the negation of a rational number
-/// \return a rational 
-
 template<typename T>
 constexpr Rational<T> Rational<T>::operator-() {
     assert(this->denominator ==0 && "error: Rational::operator+ denominator null");
@@ -51,76 +40,51 @@ constexpr Rational<T> Rational<T>::operator-() {
 	return Rational(-this->numerator, this->denominator);
 }
 
-/// \brief Operation* to multiply two rational numbers
-/// \param ratio a constant rational number
-/// \return a rational 
-
 template<typename T>
 constexpr Rational<T> Rational<T>::operator*(const Rational &ratio) {
-    assert(ratio.getDenominator() == 0 && "error: Rational::operator* denominator null");
-    assert(this->denominator ==0 && "error: Rational::operator* denominator null");
+    assert(ratio.getDenominator() == static_cast<T>(0) && "error: Rational::operator* denominator null");
+    assert(this->denominator == static_cast<T>(0) && "error: Rational::operator* denominator null");
 	return Rational(this->numerator*ratio.getNumerator(), this->denominator*ratio.getDenominator());
 }
 
-/// \brief Operation* to multiply a rational number by a float
-/// \param f a constant float
-/// \return a rational 
-
 template<typename T>
 constexpr Rational<T> Rational<T>::operator*(const float &f) {
-    assert(this->denominator ==0 && "error: Rational::operator* denominator null");
+    assert(this->denominator == static_cast<T>(0) && "error: Rational::operator* denominator null");
 	Rational fToRatio(floatToRatio<T>(f));
     return Rational((*this)*fToRatio);
 }
 
-/// \brief Operation/ to subtract a rational number to a rational number
-/// \param ratio a constant rational number
-/// \return a rational 
-
 template<typename T>
 constexpr Rational<T> Rational<T>::operator/(const Rational &ratio) {
-    assert(ratio.getDenominator() == 0 && "error: Rational::operator/ denominator null");
-    assert(this->denominator ==0 && "error: Rational::operator/ denominator null");
+    assert(ratio.getDenominator() == static_cast<T>(0) && "error: Rational::operator/ denominator null");
+    assert(this->denominator == static_cast<T>(0) && "error: Rational::operator/ denominator null");
     Rational ratioCopy(ratio);
     return (*this)*ratioCopy.invRatio();
 }
 
 /* ----------- Comparison ----------- */
 
-/// \brief Operation== to check the equality between 2 rationals
-/// \param ratio a constant rational number
-/// \return a boolean (true or false)
-
-
 template<typename T>
 constexpr bool Rational<T>::operator==(const Rational &ratio) {
-    assert(ratio.getDenominator() == 0 && "error: Rational::operator/ denominator null");
-    assert(this->denominator ==0 && "error: Rational::operator/ denominator null");
+    assert(ratio.getDenominator() == static_cast<T>(0) && "error: Rational::operator/ denominator null");
+    assert(this->denominator == static_cast<T>(0) && "error: Rational::operator/ denominator null");
     if(this->getNumerator() == ratio.getNumerator() && this->getDenominator() == ratio.getDenominator()) {
         return true;
     }
     return false;
 }
 
-/// \brief Operation!= to check the inequality between 2 rationals
-/// \param ratio a constant rational number
-/// \return a boolean (true or false)
-
 template<typename T>
 constexpr bool Rational<T>::operator!=(const Rational &ratio) {
-    assert(ratio.getDenominator() == 0 && "error: Rational::operator/ denominator null");
-    assert(this->denominator ==0 && "error: Rational::operator/ denominator null");
+    assert(ratio.getDenominator() == static_cast<T>(0) && "error: Rational::operator/ denominator null");
+    assert(this->denominator == static_cast<T>(0) && "error: Rational::operator/ denominator null");
     return !(*this == ratio);
 }
 
-/// \brief Operation>= to check the equality or the superiority between 2 rationals
-/// \param ratio a constant rational number
-/// \return a boolean (true or false)
-
 template<typename T>
 constexpr bool Rational<T>::operator>=(const Rational &ratio) {
-    assert(ratio.getDenominator() == 0 && "error: Rational::operator/ denominator null");
-    assert(this->denominator ==0 && "error: Rational::operator/ denominator null");
+    assert(ratio.getDenominator() == static_cast<T>(0) && "error: Rational::operator/ denominator null");
+    assert(this->denominator == static_cast<T>(0) && "error: Rational::operator/ denominator null");
     T deno1 = ratio.getDenominator();
     T deno2 = this->getDenominator();
     T nume1 = ratio.getNumerator();
@@ -133,37 +97,24 @@ constexpr bool Rational<T>::operator>=(const Rational &ratio) {
     return false;
 }
 
-/// \brief Operation< to check the inferiority between 2 rationals
-/// \param ratio a constant rational number
-/// \return a boolean (true or false)
-
 template<typename T>
 constexpr bool Rational<T>::operator<(const Rational &ratio) {
-    assert(ratio.getDenominator() == 0 && "error: Rational::operator/ denominator null");
-    assert(this->denominator ==0 && "error: Rational::operator/ denominator null");
+    assert(ratio.getDenominator() == static_cast<T>(0) && "error: Rational::operator/ denominator null");
+    assert(this->denominator == static_cast<T>(0) && "error: Rational::operator/ denominator null");
     return !(*this >= ratio);
 }
 
-/// \brief Operation<= to check the equality or inferiority between 2 rationals
-/// \param ratio a constant rational number
-/// \return a boolean (true or false)
-
 template<typename T>
 constexpr bool Rational<T>::operator<=(const Rational &ratio) {
-    assert(ratio.getDenominator() == 0 && "error: Rational::operator/ denominator null");
-    assert(this->denominator ==0 && "error: Rational::operator/ denominator null");
+    assert(ratio.getDenominator() == static_cast<T>(0) && "error: Rational::operator/ denominator null");
+    assert(this->denominator == static_cast<T>(0) && "error: Rational::operator/ denominator null");
     return (*this<ratio || *this==ratio);
 }
 
-/// \brief Operation> to check the equality or inferiority between 2 rationals
-/// \param ratio a constant rational number
-/// \return a boolean (true or false)
-
-
 template<typename T>
 constexpr bool Rational<T>::operator>(const Rational &ratio) {
-    assert(ratio.getDenominator() == 0 && "error: Rational::operator/ denominator null");
-    assert(this->denominator ==0 && "error: Rational::operator/ denominator null"); 
+    assert(ratio.getDenominator() == static_cast<T>(0) && "error: Rational::operator/ denominator null");
+    assert(this->denominator == 0 && "error: Rational::operator/ denominator null"); 
     return !(*this <= ratio);
 }
 

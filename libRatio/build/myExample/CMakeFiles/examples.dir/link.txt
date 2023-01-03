@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/examples.dir/src/main.cpp.o -o examples  ../INTERFACE/libRational.a 

@@ -1,2 +1,0 @@
-# libRationel
-Allright !

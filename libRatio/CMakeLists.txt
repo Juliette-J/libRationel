@@ -9,8 +9,8 @@ add_subdirectory(myLib INTERFACE)
 include_directories(${CMAKE_SOURCE_DIR}/myLib/include) # important : other projects call by this cmake will know this include directory
 
 # add myCode
-message(STATUS "myCode cmake part ..." )
-add_subdirectory(myCode)
+message(STATUS "myExample cmake part ..." )
+add_subdirectory(myExample)
 
 # add myTest
 find_package(GTest OPTIONAL_COMPONENTS)
