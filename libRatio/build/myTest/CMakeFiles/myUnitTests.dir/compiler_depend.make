@@ -190,7 +190,6 @@ myTest/CMakeFiles/myUnitTests.dir/src/sample_test.cpp.o: ../myTest/src/sample_te
   /usr/include/c++/12/bit \
   /usr/include/c++/12/pstl/glue_numeric_defs.h \
   /usr/include/c++/12/pstl/execution_defs.h \
-  /usr/include/c++/12/random \
   /usr/include/c++/12/cmath \
   /usr/include/math.h \
   /usr/include/bits/math-vector.h \
@@ -216,6 +215,12 @@ myTest/CMakeFiles/myUnitTests.dir/src/sample_test.cpp.o: ../myTest/src/sample_te
   /usr/include/c++/12/tr1/poly_hermite.tcc \
   /usr/include/c++/12/tr1/poly_laguerre.tcc \
   /usr/include/c++/12/tr1/riemann_zeta.tcc \
+  ../myLib/include/RatioOperators.hpp \
+  ../myLib/include/Rational.hpp \
+  /usr/include/c++/12/cassert \
+  /usr/include/assert.h \
+  ../myLib/include/RatioMethods.hpp \
+  /usr/include/c++/12/random \
   /usr/include/c++/12/bits/random.h \
   /usr/include/c++/12/vector \
   /usr/include/c++/12/bits/stl_uninitialized.h \
@@ -362,8 +367,6 @@ myTest/CMakeFiles/myUnitTests.dir/src/sample_test.cpp.o: ../myTest/src/sample_te
   /usr/include/c++/12/iterator \
   /usr/include/c++/12/bits/stream_iterator.h \
   /usr/include/gtest/internal/gtest-param-util.h \
-  /usr/include/c++/12/cassert \
-  /usr/include/assert.h \
   /usr/include/gtest/gtest-test-part.h \
   /usr/include/gtest/gtest_prod.h \
   /usr/include/gtest/gtest-typed-test.h \
@@ -373,10 +376,6 @@ myTest/CMakeFiles/myUnitTests.dir/src/sample_test.cpp.o: ../myTest/src/sample_te
 /usr/include/gtest/gtest_pred_impl.h:
 
 /usr/include/gtest/gtest_prod.h:
-
-/usr/include/assert.h:
-
-/usr/include/c++/12/cassert:
 
 /usr/include/gtest/internal/gtest-param-util.h:
 
@@ -505,6 +504,12 @@ myTest/CMakeFiles/myUnitTests.dir/src/sample_test.cpp.o: ../myTest/src/sample_te
 /usr/include/c++/12/bits/atomic_base.h:
 
 /usr/include/c++/12/bits/shared_ptr_atomic.h:
+
+/usr/include/c++/12/ext/concurrence.h:
+
+/usr/include/c++/12/bits/shared_ptr_base.h:
+
+/usr/include/c++/12/bits/shared_ptr.h:
 
 /usr/include/asm-generic/bitsperlong.h:
 
@@ -752,13 +757,9 @@ myTest/CMakeFiles/myUnitTests.dir/src/sample_test.cpp.o: ../myTest/src/sample_te
 
 /usr/include/bits/mathcalls.h:
 
-/usr/include/c++/12/bits/shared_ptr_base.h:
-
 /usr/include/c++/12/iostream:
 
 /usr/include/c++/12/initializer_list:
-
-/usr/include/c++/12/bits/shared_ptr.h:
 
 /usr/include/c++/12/memory:
 
@@ -789,6 +790,8 @@ myTest/CMakeFiles/myUnitTests.dir/src/sample_test.cpp.o: ../myTest/src/sample_te
 /usr/include/c++/12/bits/align.h:
 
 /usr/include/bits/long-double.h:
+
+../myLib/include/RatioMethods.hpp:
 
 ../myTest/src/sample_test.cpp:
 
@@ -866,6 +869,8 @@ myTest/CMakeFiles/myUnitTests.dir/src/sample_test.cpp.o: ../myTest/src/sample_te
 
 /usr/include/c++/12/bits/exception_defines.h:
 
+../myLib/include/RatioOperators.hpp:
+
 /usr/include/c++/12/bits/hash_bytes.h:
 
 /usr/include/c++/12/bits/allocated_ptr.h:
@@ -925,8 +930,6 @@ myTest/CMakeFiles/myUnitTests.dir/src/sample_test.cpp.o: ../myTest/src/sample_te
 /usr/include/endian.h:
 
 /usr/include/c++/12/bits/hashtable.h:
-
-/usr/include/c++/12/ext/concurrence.h:
 
 /usr/include/bits/byteswap.h:
 
@@ -1070,6 +1073,12 @@ myTest/CMakeFiles/myUnitTests.dir/src/sample_test.cpp.o: ../myTest/src/sample_te
 
 /usr/include/c++/12/tr1/poly_laguerre.tcc:
 
+/usr/include/c++/12/cassert:
+
+/usr/include/assert.h:
+
+/usr/include/c++/12/bits/erase_if.h:
+
 /usr/include/c++/12/bits/stl_vector.h:
 
 /usr/include/c++/12/x86_64-redhat-linux/bits/opt_random.h:
@@ -1087,8 +1096,6 @@ myTest/CMakeFiles/myUnitTests.dir/src/sample_test.cpp.o: ../myTest/src/sample_te
 /usr/include/c++/12/bits/hashtable_policy.h:
 
 /usr/include/c++/12/bits/enable_special_members.h:
-
-/usr/include/c++/12/bits/erase_if.h:
 
 /usr/include/c++/12/array:
 

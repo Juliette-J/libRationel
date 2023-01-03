@@ -1,6 +1,4 @@
 #include "Rational.hpp"
-#include "RatioOperators.hpp"
-#include "RatioMethods.hpp"
 
 #include <cmath>
 #include <numeric>
@@ -8,110 +6,18 @@
 #include <iostream>
 #include <cassert>
 
-/* ---------------- Operators ---------------- */
-
-/* ----------- Aritmetic ----------- 
-template<typename T>
-Rational<T> Rational<T>::operator+(const Rational &ratio) {
-    assert(ratio.getDenominator() == 0 || *this->denominator && "error: Rational::operator+ denominator null");
-	int numerator = this->numerator*ratio.getDenominator() + this->denominator*ratio.getNumerator();
-    int denominator = this->denominator*ratio.getDenominator();
-	return Rational(numerator, denominator);
-}
-
-template<typename T>
-Rational<T> Rational<T>::operator-(const Rational &ratio) {
-    assert(ratio.getDenominator() == 0 || *this->denominator && "error: Rational::operator- denominator null");
-	int numerator = this->numerator*ratio.getDenominator() - this->denominator*ratio.getNumerator();
-    int denominator = this->denominator*ratio.getDenominator();
-	return Rational(numerator, denominator);
-}
-
-template<typename T>
-Rational<T> Rational<T>::operator-() {
-    assert(*this->denominator && "error: Rational::operator- denominator null");
-	return Rational(-this->numerator, this->denominator);
-}
-
-template<typename T>
-Rational<T> Rational<T>::operator*(const Rational &ratio) {
-    assert(ratio.getDenominator() == 0 || *this->denominator && "error: Rational::operator* denominator null");
-	return Rational(this->numerator*ratio.getNumerator(), this->denominator*ratio.getDenominator());
-}
-
-template<typename T>
-Rational<T> Rational<T>::operator*(const float &f) {
-	Rational fToRatio(floatToRatio<T>(f));
-    return Rational((*this)*fToRatio);
-}
-
-template<typename T>
-Rational<T> Rational<T>::operator/(const Rational &ratio) {
-    assert(ratio.getDenominator() == 0 || *this->denominator && "error: Rational::operator* denominator null");
-    return Rational(this->numerator*ratio.getDenominator(), this->denominator*ratio.getNumerator()); 
-}*/
-
-/* ----------- Comparison -----------
-
-template<typename T>
-bool Rational<T>::operator==(const Rational &ratio) {
-    if(this->getNumerator() == ratio.getNumerator() && this->getDenominator() == ratio.getDenominator()) {
-        return true;
-    }
-    return false;
-}
-
-template<typename T>
-bool Rational<T>::operator!=(const Rational &ratio)
-{
-    return !(*this == ratio);
-}
-
-template<typename T>
-bool Rational<T>::operator>=(const Rational &ratio)
-{
-    int deno1 = ratio.getDenominator();
-    int deno2 = this->getDenominator();
-    int nume1 = ratio.getNumerator();
-    int nume2 = this->getNumerator();
-    nume1 = nume1 * deno2;
-    nume2 = nume2 * deno1;
-    if (nume2 >= nume1) {
-        return true;
-    }
-    return false;
-}
-
-template<typename T>
-bool Rational<T>::operator<(const Rational &ratio)
-{
-    return !(*this >= ratio);
-}
-
-
-template<typename T>
-bool Rational<T>::operator<=(const Rational &ratio)
-{
-    return !(*this<ratio && *this==ratio);
-}
-
-
-template<typename T>
-bool Rational<T>::operator>(const Rational &ratio)
-{
-    return !(*this <= ratio);
-} */
-
+#ifndef RATIOMETHODS_HPP
+#define RATIOMETHODS_HPP
 
 /* ---------------- Methods ---------------- */
 
-/* ----- Arithmetics ----- 
+/* ----- Arithmetics ----- */
 
 template<typename T>
 Rational<T> Rational<T>::invRatio(){
-    assert(this->numerateur==0 && "error: Rational::invRatio numerator null");
+    //assert(this->numerateur==0 && "error: Rational::invRatio numerator null");
 
-     if (this->getNumerator()==0){
+    /* if (this->getNumerator()==0){
         if(this->getDenominator() == 1) {
             std::cout << "You reached the infinite !" << std::endl;
             return Rational(1,0); 
@@ -122,14 +28,14 @@ Rational<T> Rational<T>::invRatio(){
     }
     else if (this->getNumerator() < 0) {
         Rational(-this->getDenominator(), -this->getNumerator());
-    } 
+    } */
 
     return Rational(this->getDenominator(), this->getNumerator());
 }
 
 template<typename T>
 Rational<T> Rational<T>::squareRoot(){
-    assert(this->denominator==0 && "error: Rational::squareRoot denomerator null");
+    //assert(this->denominator==0 && "error: Rational::squareRoot denomerator null");
     int a = this->getNumerator();
     int b = this-> getDenominator();
     if (a<0){
@@ -150,7 +56,7 @@ Rational<T> Rational<T>::squareRoot(){
 
 template<typename T>
 Rational<T> Rational<T>::squareRoot2(){
-    assert(this->denominator==0 && "error: Rational::squareRoot denomerator null");
+    //assert(this->denominator==0 && "error: Rational::squareRoot denomerator null");
     int a = this->getNumerator();
     int b = this-> getDenominator();
     if (a<0){
@@ -173,7 +79,6 @@ Rational<T> Rational<T>::power(const int &power) {
     int pow_denominator = std::pow(this->getDenominator(), power);
     return Rational(pow_numerator, pow_denominator);
 }
-
 
 template<typename T>
 Rational<T> Rational<T>::log(){
@@ -212,7 +117,7 @@ Rational<T> Rational<T>::log2(){
 
 template<typename T>
 Rational<T> Rational<T>::absolute(){
-    assert(this->denominator==0 && "error: Rational::absolute numerator null");
+    //assert(this->denominator==0 && "error: Rational::absolute numerator null");
     return Rational(std::abs(this->numerator), this->denominator);
 }
 
@@ -315,13 +220,13 @@ Rational<T> Rational<T>::expRatio() {
         result = (decimal_part.expTaylor())*(std::exp(int_part.getNumerator()));
     }
     return result;
-} */
+}
 
-/* ----- Manipulations ----- 
+/* ----- Manipulations ----- */
 
 template<typename T>
 Rational<T> Rational<T>::makeIrreductible(){
-    assert(this->denominator==0 && "error: Rational::makeIrreductible denominator null");
+    //assert(this->denominator==0 && "error: Rational::makeIrreductible denominator null");
     int numerator = this->getNumerator();
     int denominator = this-> getDenominator();
 
@@ -330,9 +235,9 @@ Rational<T> Rational<T>::makeIrreductible(){
         denominator /= std::abs(std::gcd(numerator, denominator));
     }
     return Rational(numerator, denominator);
-}*/
+}
 
-/* ---------- Methods outside Rational class ---------- 
+/* ---------- Methods outside Rational class ---------- */
 
 template<typename T>
 Rational<T> floatToRatio(const float &x, unsigned int nbIter) {
@@ -378,12 +283,14 @@ std::ostream& operator<< (std::ostream& stream, const Rational<T> &ratio) {
 
 	return stream;
 }
-*/
 
-/* ---------------- Extern product for float---------------- 
+
+/* ---------------- Extern product for float---------------- */
 
 template<typename T>
 Rational<T> extProductReal(const float &f, const Rational<T> &ratio) {
     Rational fToRatio(floatToRatio<T>(f));
     return fToRatio*ratio;
-}*/
+}
+
+#endif

@@ -1,10 +1,11 @@
 #include "Rational.hpp"
+#include "RatioOperators.hpp"
+#include "RatioMethods.hpp"
 
 #include <iostream>
 
 int main() {
 
-    Rational ratio(1.1, 2.2);
     Rational rat1(1,3);
     Rational rat2(12,4);
     Rational rat3(5,9);
@@ -15,7 +16,6 @@ int main() {
     // Display and constructors
  
     std::cout << "Display and constructors : "<< std::endl;
-    std::cout << ratio << std::endl;
     std::cout << rat1 << std::endl;
     std::cout << rat2 << std::endl;
     std::cout << rat2.invRatio() << std::endl;
@@ -128,9 +128,9 @@ int main() {
     std::cout << "rati != rati : " << (rati != rati) << std::endl;
 
     // Conversion
-    std::cout << "-2.5 to ratio : " << floatToRatio(-2.5 , 5) << std::endl;
-    std::cout << "0.3 to ratio : " << floatToRatio(0.3, 10) << std::endl; // incoherent up to 10 epochs
-    std::cout << "0.75 to ratio : " << floatToRatio(0.75, 5) << std::endl; // should be 3/4 ...
+    std::cout << "-2.5 to ratio : " << floatToRatio<int>(-2.5 , 5) << std::endl;
+    std::cout << "0.3 to ratio : " << floatToRatio<int>(0.3, 10) << std::endl; // incoherent up to 10 epochs
+    std::cout << "0.75 to ratio : " << floatToRatio<int>(0.75, 5) << std::endl; // should be 3/4 ...
 
     // Square root sqrt(r1)/sqrt(r2)
     std::cout << "sqrt(2/3) to ratio : " << rati3.squareRoot() << std::endl;

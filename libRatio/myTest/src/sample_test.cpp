@@ -1,4 +1,6 @@
 #include "Rational.hpp"
+#include "RatioOperators.hpp"
+#include "RatioMethods.hpp"
 
 #include <random>
 #include <chrono>
@@ -35,6 +37,40 @@ TEST (RatioConstructor, constructor) {
 
 	    ASSERT_EQ(ratio.getNumerator()*std::gcd(num, den), num);
 		ASSERT_EQ(ratio.getDenominator()*std::gcd(num, den), den);
+	}
+}
+
+/* Conversion -> float to rational */
+
+TEST (RatioConversion, floatToRatio) {
+
+	// Seed
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+	// Generator
+	std::mt19937 generator(seed);
+
+	// Distribution
+	std::uniform_real_distribution<float> uniformFloatDistribution(-20,20);
+	auto gen = std::bind(uniformFloatDistribution, generator);
+
+	// run many times the same test with different values
+	for(int run=0; run<100; ++run){
+
+		// generate random data
+		const float real = gen();
+		Rational<int> ratio(floatToRatio<int>(real, 5));
+
+		// keep the integer part + the three first decimals of the exact solution
+		float exactResult = real*1000;
+		exactResult = std::floor(exactResult+0.5); // +0.5 to have the rounded value
+
+		// keep the integer part + the three first decimals of the found solution
+		float result = ((float)ratio.getNumerator())/((float)ratio.getDenominator());
+		result *= 1000;
+		result = std::floor(result+0.5); // +0.5 to have the rounded value
+
+	    ASSERT_EQ(result, exactResult);
 	}
 }
 
@@ -115,7 +151,7 @@ TEST (RatioOperators, product) {
 	}
 }
 
-TEST (RatioOperators, extern_product) {
+TEST (RatioOperators, externProductRatio) {
 
 	// Seed
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -124,24 +160,64 @@ TEST (RatioOperators, extern_product) {
 	std::mt19937 generator(seed);
 
 	// Distribution
-	std::uniform_real_distribution<float> uniformFloatDistribution(-10,10);
+	std::uniform_real_distribution<float> uniformRealDistribution(-20,20);
 	std::uniform_int_distribution<int> uniformIntDistribution(-50,50);
-	auto gen_real = std::bind(uniformFloatDistribution, generator);
-	auto gen_int = std::bind(uniformIntDistribution, generator);
+	auto genReal = std::bind(uniformRealDistribution, generator);
+	auto genInt = std::bind(uniformIntDistribution, generator);
 
 	// run many times the same test with different values
 	for(int run=0; run<100; ++run){
 
 		// generate random data
-		float real = gen_real();
-		Rational ratio1(gen_int(), gen_int());
+		float real = genReal();
+		Rational ratio1(genInt(), genInt());
 		Rational ratio2(ratio1*real);
 
-		Rational f_to_ratio = floatToRatio(real);
-		Rational ratio3(ratio1.getNumerator()*f_to_ratio.getNumerator(), ratio1.getDenominator()*f_to_ratio.getDenominator());
+		// keep the integer part + the three first decimals of the exact solution
+		float exactResult = real*(((float)ratio1.getNumerator())/((float)ratio1.getDenominator()))*1000;
+		exactResult = std::floor(exactResult+0.5); // +0.5 to have the rounded value
 
-	    ASSERT_EQ(ratio2.getNumerator(), ratio3.getNumerator());
-        ASSERT_EQ(ratio2.getDenominator(), ratio3.getDenominator());
+		// keep the integer part + the three first decimals of the found solution
+		float result = ((float)ratio2.getNumerator())/((float)ratio2.getDenominator());
+		result *= 1000;
+		result = std::floor(result+0.5); // +0.5 to have the rounded value
+
+	    ASSERT_EQ(result, exactResult);
+	}
+}
+
+TEST (RatioOperators, externProductReal) {
+
+	// Seed
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+	// Generator
+	std::mt19937 generator(seed);
+
+	// Distribution
+	std::uniform_real_distribution<float> uniformRealDistribution(-20,20);
+	std::uniform_int_distribution<int> uniformIntDistribution(-50,50);
+	auto genReal = std::bind(uniformRealDistribution, generator);
+	auto genInt = std::bind(uniformIntDistribution, generator);
+
+	// run many times the same test with different values
+	for(int run=0; run<100; ++run){
+
+		// generate random data
+		float real = genReal();
+		Rational ratio1(genInt(), genInt());
+		Rational ratio2 = extProductReal(real,ratio1);
+
+		// keep the integer part + the three first decimals of the exact solution
+		float exactResult = real*(((float)ratio1.getNumerator())/((float)ratio1.getDenominator()))*1000;
+		exactResult = std::floor(exactResult+0.5); // +0.5 to have the rounded value
+
+		// keep the integer part + the three first decimals of the found solution
+		float result = ((float)ratio2.getNumerator())/((float)ratio2.getDenominator());
+		result *= 1000;
+		result = std::floor(result+0.5); // +0.5 to have the rounded value
+
+	    ASSERT_EQ(result, exactResult);
 	}
 }
 
@@ -247,8 +323,6 @@ TEST (RatioArithmetic, inverse) {
         ASSERT_EQ(ratio2.getDenominator(), std::abs(ratio1.getNumerator()));
 	}
 }
-
-/* ------- Methods outside Rational class ------- */
 
 TEST (RatioArithmetic, power) {
 
@@ -387,6 +461,7 @@ TEST (RatioArithmetic, expRatio) {
 	    ASSERT_EQ(exp_result, exp_exact_result);
 	}
 }
+
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
