@@ -15,9 +15,14 @@
 
 template<typename T>
 constexpr Rational<T> Rational<T>::operator+(const Rational &ratio) {
-    assert(ratio.getDenominator() == 0 && "error: Rational::operator+ denominator null");
-    assert(this->denominator ==0 && "error: Rational::operator+ denominator null");
-    
+    try {
+        if((this->denominator == static_cast<T>(0) && this->numerator != static_cast<T>(1)) 
+        || (ratio.getDenominator() == static_cast<T>(0) && ratio.getNumerator() != static_cast<T>(1))) throw std::invalid_argument("error");
+    }
+    catch(const std::invalid_argument& e) {
+        std::cerr << "Invalid argument (Rational with 0 as denominator and not the infinite)." << std::endl;
+    }
+
 	T numerator = this->numerator*ratio.getDenominator() + this->denominator*ratio.getNumerator();
     T denominator = this->denominator*ratio.getDenominator();
 	return Rational(numerator, denominator);
@@ -25,8 +30,13 @@ constexpr Rational<T> Rational<T>::operator+(const Rational &ratio) {
 
 template<typename T>
 constexpr Rational<T> Rational<T>::operator-(const Rational &ratio) {
-    assert(ratio.getDenominator() == 0 && "error: Rational::operator- denominator null");
-    assert(this->denominator ==0 && "error: Rational::operator- denominator null");
+    try {
+        if((this->denominator == static_cast<T>(0) && this->numerator != static_cast<T>(1)) 
+        || (ratio.getDenominator() == static_cast<T>(0) && ratio.getNumerator() != static_cast<T>(1))) throw std::invalid_argument("error");
+    }
+    catch(const std::invalid_argument& e) {
+        std::cerr << "Invalid argument (Rational with 0 as denominator and not the infinite)." << std::endl;
+    }
 
 	T numerator = this->numerator*ratio.getDenominator() - this->denominator*ratio.getNumerator();
     T denominator = this->denominator*ratio.getDenominator();
@@ -35,29 +45,51 @@ constexpr Rational<T> Rational<T>::operator-(const Rational &ratio) {
 
 template<typename T>
 constexpr Rational<T> Rational<T>::operator-() {
-    assert(this->denominator ==0 && "error: Rational::operator+ denominator null");
+    try {
+        if(this->denominator == static_cast<T>(0) && this->numerator != static_cast<T>(1)) throw std::invalid_argument("error");
+    }
+    catch(const std::invalid_argument& e) {
+        std::cerr << "Invalid argument (Rational with 0 as denominator and not the infinite)." << std::endl;
+    }
 
 	return Rational(-this->numerator, this->denominator);
 }
 
 template<typename T>
 constexpr Rational<T> Rational<T>::operator*(const Rational &ratio) {
-    assert(ratio.getDenominator() == static_cast<T>(0) && "error: Rational::operator* denominator null");
-    assert(this->denominator == static_cast<T>(0) && "error: Rational::operator* denominator null");
+    try {
+        if((this->denominator == static_cast<T>(0) || (ratio.getDenominator() == static_cast<T>(0))) && ratio.getNumerator() != static_cast<T>(1)) throw std::invalid_argument("error");
+    }
+    catch(const std::invalid_argument& e) {
+        std::cerr << "Invalid argument (Rational with 0 as denominator and not the infinite)." << std::endl;
+    }
+
 	return Rational(this->numerator*ratio.getNumerator(), this->denominator*ratio.getDenominator());
 }
 
 template<typename T>
 constexpr Rational<T> Rational<T>::operator*(const float &f) {
-    assert(this->denominator == static_cast<T>(0) && "error: Rational::operator* denominator null");
+    try {
+        if(this->denominator == static_cast<T>(0) && this->numerator != static_cast<T>(1)) throw std::invalid_argument("error");
+    }
+    catch(const std::invalid_argument& e) {
+        std::cerr << "Invalid argument (Rational with 0 as denominator and not the infinite)." << std::endl;
+    }
+
 	Rational fToRatio(floatToRatio<T>(f));
     return Rational((*this)*fToRatio);
 }
 
 template<typename T>
 constexpr Rational<T> Rational<T>::operator/(const Rational &ratio) {
-    assert(ratio.getDenominator() == static_cast<T>(0) && "error: Rational::operator/ denominator null");
-    assert(this->denominator == static_cast<T>(0) && "error: Rational::operator/ denominator null");
+    try {
+        if((this->denominator == static_cast<T>(0) && this->numerator != static_cast<T>(1)) 
+        || (ratio.getDenominator() == static_cast<T>(0) && ratio.getNumerator() != static_cast<T>(1))) throw std::invalid_argument("error");
+    }
+    catch(const std::invalid_argument& e) {
+        std::cerr << "Invalid argument (Rational with 0 as denominator and not the infinite)." << std::endl;
+    }
+
     Rational ratioCopy(ratio);
     return (*this)*ratioCopy.invRatio();
 }
@@ -66,8 +98,6 @@ constexpr Rational<T> Rational<T>::operator/(const Rational &ratio) {
 
 template<typename T>
 constexpr bool Rational<T>::operator==(const Rational &ratio) {
-    assert(ratio.getDenominator() == static_cast<T>(0) && "error: Rational::operator/ denominator null");
-    assert(this->denominator == static_cast<T>(0) && "error: Rational::operator/ denominator null");
     if(this->getNumerator() == ratio.getNumerator() && this->getDenominator() == ratio.getDenominator()) {
         return true;
     }
@@ -76,22 +106,15 @@ constexpr bool Rational<T>::operator==(const Rational &ratio) {
 
 template<typename T>
 constexpr bool Rational<T>::operator!=(const Rational &ratio) {
-    assert(ratio.getDenominator() == static_cast<T>(0) && "error: Rational::operator/ denominator null");
-    assert(this->denominator == static_cast<T>(0) && "error: Rational::operator/ denominator null");
+
     return !(*this == ratio);
 }
 
 template<typename T>
 constexpr bool Rational<T>::operator>=(const Rational &ratio) {
-    assert(ratio.getDenominator() == static_cast<T>(0) && "error: Rational::operator/ denominator null");
-    assert(this->denominator == static_cast<T>(0) && "error: Rational::operator/ denominator null");
-    T deno1 = ratio.getDenominator();
-    T deno2 = this->getDenominator();
-    T nume1 = ratio.getNumerator();
-    T nume2 = this->getNumerator();
-    nume1 = nume1 * deno2;
-    nume2 = nume2 * deno1;
-    if (nume2 >= nume1) {
+    T nume1 = this->getNumerator() * ratio.getDenominator();
+    T nume2 = ratio.getNumerator() * this->getDenominator();
+    if (nume1 >= nume2) {
         return true;
     }
     return false;
@@ -99,23 +122,19 @@ constexpr bool Rational<T>::operator>=(const Rational &ratio) {
 
 template<typename T>
 constexpr bool Rational<T>::operator<(const Rational &ratio) {
-    assert(ratio.getDenominator() == static_cast<T>(0) && "error: Rational::operator/ denominator null");
-    assert(this->denominator == static_cast<T>(0) && "error: Rational::operator/ denominator null");
-    return !(*this >= ratio);
+
+    return !((*this) >= ratio);
 }
 
 template<typename T>
 constexpr bool Rational<T>::operator<=(const Rational &ratio) {
-    assert(ratio.getDenominator() == static_cast<T>(0) && "error: Rational::operator/ denominator null");
-    assert(this->denominator == static_cast<T>(0) && "error: Rational::operator/ denominator null");
-    return (*this<ratio || *this==ratio);
+    return (((*this)<ratio) || ((*this)==ratio));
 }
 
 template<typename T>
 constexpr bool Rational<T>::operator>(const Rational &ratio) {
-    assert(ratio.getDenominator() == static_cast<T>(0) && "error: Rational::operator/ denominator null");
-    assert(this->denominator == 0 && "error: Rational::operator/ denominator null"); 
-    return !(*this <= ratio);
+
+    return !((*this) <= ratio);
 }
 
 #endif

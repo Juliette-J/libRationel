@@ -15,10 +15,11 @@
 
 template<typename T>
 constexpr Rational<T> Rational<T>::invRatio(){
-    assert(this->denominator == static_cast<T>(0) && "error: Rational::squareRoot denominator null");
-    if(this->getNumerator() == static_cast<T>(0)){
-        std::cerr << "error: Rational::invRatio: numerator null" << std::endl;
-        return *this;
+    try {
+        if(this->denominator != static_cast<T>(1) && this->numerator == static_cast<T>(0)) throw std::invalid_argument("error");
+    }
+    catch(const std::invalid_argument& e) {
+        std::cerr << "Invalid argument (Rational with 0 as denominator and not the infinite)." << std::endl;
     }
 
     return Rational(this->getDenominator(), this->getNumerator());
@@ -26,13 +27,16 @@ constexpr Rational<T> Rational<T>::invRatio(){
 
 template<typename T>
 constexpr Rational<T> Rational<T>::squareRoot(){
-    assert(this->denominator == static_cast<T>(0) && "error: Rational::squareRoot denominator null");
+    assert(this->numerator >= static_cast<T>(0) && "error: Rational::squareRoot numerator negative");
+    try {
+        if(this->denominator != static_cast<T>(0) && this->numerator == static_cast<T>(1)) throw std::invalid_argument("error");
+    }
+    catch(const std::invalid_argument& e) {
+        std::cerr << "Invalid argument (Rational with 0 as denominator and not the infinite)." << std::endl;
+    }
+    
     T num = this->getNumerator();
     T den = this-> getDenominator();
-    if (num < static_cast<T>(0)){
-        std::cerr << "error: Rational::sqareRoot: no square root for negative number" << std::endl;
-        return *this;
-    }
 
     float sqrtNum = std::sqrt(num);
     float sqrtDen = std::sqrt(den);
@@ -41,20 +45,24 @@ constexpr Rational<T> Rational<T>::squareRoot(){
     Rational sqrtDenRatio(floatToRatio<T>(sqrtDen, 10));
     
     //by using the formula : sqrt(a/b)=sqrt(a)/sqrt(b)
-
     return Rational(sqrtNumRatio/sqrtDenRatio);
+
     // less accurate, more costly
 }
 
 template<typename T>
 constexpr Rational<T> Rational<T>::squareRoot2(){
-    assert(this->denominator == static_cast<T>(0) && "error: Rational::squareRoot2 denominator null");
+    assert(this->numerator >= static_cast<T>(0) && "error: Rational::squareRoot numerator negative");
+    try {
+        if(this->denominator != static_cast<T>(0) && this->numerator == static_cast<T>(1)) throw std::invalid_argument("error");
+    }
+    catch(const std::invalid_argument& e) {
+        std::cerr << "Invalid argument (Rational with 0 as denominator and not the infinite)." << std::endl;
+    }
+    
     T num = this->getNumerator();
     T den = this-> getDenominator();
-    if (num < static_cast<T>(0)){
-        std::cerr << "error: Rational::sqareRoot: no square root for negative number" << std::endl;
-        return *this;
-    }
+
     float sqrtRatio = std::sqrt(((float)num)/((float)den));
     return  Rational(floatToRatio<T>(sqrtRatio , 10));
      // more acurate, less costly
@@ -76,12 +84,10 @@ constexpr Rational<T> Rational<T>::power(const int &factor) {
 
 template<typename T>
 constexpr Rational<T> Rational<T>::log(){
+    assert(this->numerator > static_cast<T>(0) && this->denominator > static_cast<T>(0) && "error: Rational::squareRoot numerator negative");
+    
     T num = this->getNumerator();
     T den  = this-> getDenominator();
-    if (num < static_cast<T>(0)){
-        std::cerr << "error: Rational::log: no log for negative number ! Let you to 0." << std::endl;
-        return Rational(static_cast<T>(0),static_cast<T>(1));
-    }
 
     float logNum = std::log(num);
     float logDen = std::log(den);
@@ -90,32 +96,37 @@ constexpr Rational<T> Rational<T>::log(){
     Rational logDenRatio(floatToRatio<T>(logDen, 5));
 
     //by using the formula : log(a/b)=log(a)-log(b)
-    
     return logNumRatio - logDenRatio;
 }
 
 template<typename T>
 constexpr Rational<T> Rational<T>::log2(){
+    assert(this->numerator > static_cast<T>(0) && this->denominator > static_cast<T>(0) && "error: Rational::squareRoot numerator negative");
+    
     T num = this->getNumerator();
     T den = this->getDenominator();
-    if (num < static_cast<T>(0)){
-        std::cerr << "error: Rational::log: no log for negative number ! Let you to 0." << std::endl;
-        return Rational(static_cast<T>(0), static_cast<T>(1));
-    }
 
     float logRatio = std::log(((float)num)/((float)den));
     return  floatToRatio<T>(logRatio , 5);
+
     // better : more accurate, less costly, easier
 }
 
 template<typename T>
 constexpr Rational<T> Rational<T>::absolute(){
-    assert(this->denominator == static_cast<T>(0) && "error: Rational::absolute denominator null");
     return Rational(std::abs(this->numerator), this->denominator);
 }
 
 template<typename T>
 constexpr int Rational<T>::integerPart(){
+    try {
+        if(this->denominator == static_cast<T>(0) && this->numerator == static_cast<T>(1)) throw std::invalid_argument("error");
+    }
+    catch(const std::invalid_argument& e) {
+        std::cerr << "Invalid argument (Infinite too huge to have an integer part)." << std::endl;
+        return 0;
+    }
+
     T intPart = 0;
     T numAbs = std::abs(this->getNumerator());
     // rational < 1 -> integer part = 0
@@ -130,7 +141,7 @@ constexpr int Rational<T>::integerPart(){
         T numSubstract = numAbs;
         while(numSubstract >= this->getDenominator()){
             numSubstract -= this->getDenominator();
-            intPart += static_cast<T>(1);
+            intPart = intPart + static_cast<T>(1);
         }
     }
     // sign of the integer part
@@ -220,11 +231,35 @@ constexpr Rational<T> Rational<T>::expRatio() {
     return expRational;
 }
 
+template<typename T>
+constexpr Rational<T> Rational<T>::cosRatio2() {
+    float cosRational = std::cos(((float)this->numerator)/((float)this->denominator));
+    return floatToRatio<T>(cosRational);
+}
+
+template<typename T>
+constexpr Rational<T> Rational<T>::sinRatio2() {
+    float sinRational = std::sin(((float)this->numerator)/((float)this->denominator));
+    return floatToRatio<T>(sinRational);
+}
+
+template<typename T>
+constexpr Rational<T> Rational<T>::tanRatio2(){
+     Rational sin(this->sinRatio2());
+     Rational cos(this->cosRatio2());
+     return sin/cos;
+}
+
+template<typename T>
+constexpr Rational<T> Rational<T>::expRatio2() {
+    float expRational = std::exp(((float)this->numerator)/((float)this->denominator));
+    return floatToRatio<T>(expRational);
+}
+
 /* ----- Manipulations ----- */
 
 template<typename T>
 constexpr Rational<T> Rational<T>::makeIrreductible(){
-    //assert(this->denominator==0 && "error: Rational::makeIrreductible denominator null");
     T numerator = this->getNumerator();
     T denominator = this-> getDenominator();
 

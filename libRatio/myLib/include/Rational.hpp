@@ -191,6 +191,22 @@ class Rational {
         /// \return the exponential of the rational number under Rational type
         constexpr Rational expRatio();
 
+        /// \brief Calculate the cosinus of a rational number only using std::cos
+        /// \return the cosinus of the rational number under Rational type
+        constexpr Rational cosRatio2();
+
+        /// \brief Calculate the sinus of a rational number only using std::sin
+        /// \return the sinus of the rational number under Rational type
+        constexpr Rational sinRatio2();
+
+        /// \brief Calculate the tangent of a rational number by making sinRatio2()/cosRatio2()
+        /// \return tan of the rational number under Rational type
+        constexpr Rational tanRatio2();
+
+        /// \brief Calculate the exponential of a rational number only using std::exp
+        /// \return the exponential of the rational number under Rational type
+        constexpr Rational expRatio2();
+
         /* ----- Manipulations ----- */
 
         /// \brief Transform a rational number into an irreducible rational number

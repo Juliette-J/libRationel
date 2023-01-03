@@ -22,7 +22,7 @@ endif()
 add_library(Rational ${source_files} ${header_files})
 
 # compilation flags
-target_compile_features(Rational PRIVATE cxx_std_17) # use at least c++ 11
+target_compile_features(Rational PRIVATE cxx_std_20) # use at least c++ 20
 if (MSVC)
     target_compile_options(Rational PRIVATE /W3)
 else()
