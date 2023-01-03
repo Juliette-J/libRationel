@@ -468,6 +468,8 @@ TEST (RatioArithmetic, squareRoot) {
     
 	    ASSERT_EQ(ratio2.getNumerator(), ratio3.getNumerator());
         ASSERT_EQ(ratio2.getDenominator(),ratio3.getDenominator());
+
+		/*ASSERT_TRUE(std::abs(ratio2-ratio3)/std::abs(ratio2) < Rational(1/1000));*/
 	}
 }
 
@@ -546,7 +548,7 @@ TEST (RatioArithmetic, logarithm2) {
 		Rational ratio1(gen(), gen());
 		Rational ratio2(ratio1.log2());
 
-		float log = std::sqrt(((float)ratio1.getNumerator())/((float)ratio1.getDenominator()));
+		float log = std::log(((float)ratio1.getNumerator())/((float)ratio1.getDenominator()));
     	Rational ratio3(floatToRatio<int>(log, 7));
 
 	    ASSERT_EQ(ratio2.getNumerator(), ratio3.getNumerator());

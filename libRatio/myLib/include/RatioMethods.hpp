@@ -13,21 +13,31 @@
 
 /* ----- Arithmetics ----- */
 
+/// \brief Inversion of a rational number
+/// \return a rational with the numerator and denominator exchanged or an error if the numerator equals 0
+
 template<typename T>
 constexpr Rational<T> Rational<T>::invRatio(){
-    //assert(this->numerateur==0 && "error: Rational::invRatio numerator null");
+    assert(this->denominator==0 && "error: Rational::squareRoot denominator null");
+    if(this->getNumerator()==0){
+        std::cerr << "error: Rational::invRatio: numerator null" << std::endl;
+        return *this;
+    }
 
     return Rational(this->getDenominator(), this->getNumerator());
 }
 
+/// \brief Square root of a rational number a/b by making sqrt(a.)/sqrt(b.)
+/// \return a rational or an error if the numerator is negative
+
 template<typename T>
 constexpr Rational<T> Rational<T>::squareRoot(){
-    //assert(this->denominator==0 && "error: Rational::squareRoot denomerator null");
+    assert(this->denominator==0 && "error: Rational::squareRoot denominator null");
     T num = this->getNumerator();
     T den = this-> getDenominator();
     if (num < 0){
-        std::cout << "No square root for negative number ! Let you to 0." << std::endl;
-        return Rational(0,1);
+        std::cerr << "error: Rational::sqareRoot: no square root for negative number" << std::endl;
+        return *this;
     }
 
     float sqrtNum = std::sqrt(num);
@@ -36,24 +46,32 @@ constexpr Rational<T> Rational<T>::squareRoot(){
     Rational sqrtNumRatio(floatToRatio<T>(sqrtNum , 10));
     Rational sqrtDenRatio(floatToRatio<T>(sqrtDen, 10));
     
-    
+    //by using the formula : sqrt(a/b)=sqrt(a)/sqrt(b)
+
     return Rational(sqrtNumRatio/sqrtDenRatio);
     // less accurate, more costly
 }
 
+/// \brief Square root of a rational number by making the square root of the rational converted into a float
+/// \return a rational or an error if the numerator is negative
+
 template<typename T>
 constexpr Rational<T> Rational<T>::squareRoot2(){
-    //assert(this->denominator==0 && "error: Rational::squareRoot denomerator null");
+    assert(this->denominator==0 && "error: Rational::squareRoot2 denominator null");
     T num = this->getNumerator();
     T den = this-> getDenominator();
     if (num < 0){
-        std::cout << "No square root for negative number ! Let you to 0." << std::endl;
-        return Rational(0,1);
+        std::cerr << "error: Rational::sqareRoot: no square root for negative number" << std::endl;
+        return *this;
     }
     float sqrtRatio = std::sqrt(((float)num)/((float)den));
     return  Rational(floatToRatio<T>(sqrtRatio , 10));
      // more acurate, less costly
 }
+
+/// \brief Power of a rational number 
+/// \param factor : 
+/// \return a rational 
 
 template<typename T>
 constexpr Rational<T> Rational<T>::power(const int &factor) {
@@ -69,12 +87,15 @@ constexpr Rational<T> Rational<T>::power(const int &factor) {
     return Rational(powNum, powDen);
 }
 
+/// \brief Logarithm of a rational number by making log(a.)-log(b.)
+/// \return a rational or an error if the numerator is negative
+
 template<typename T>
 constexpr Rational<T> Rational<T>::log(){
     T num = this->getNumerator();
     T den  = this-> getDenominator();
     if (num < 0){
-        std::cout << "No log for negative number ! Let you to 0." << std::endl;
+        std::cerr << "error: Rational::log: no log for negative number ! Let you to 0." << std::endl;
         return Rational(0,1);
     }
 
@@ -83,18 +104,21 @@ constexpr Rational<T> Rational<T>::log(){
 
     Rational logNumRatio(floatToRatio<T>(logNum , 5));
     Rational logDenRatio(floatToRatio<T>(logDen, 5));
-    
+
+    //by using the formula : log(a/b)=log(a)-log(b)
     
     return logNumRatio - logDenRatio;
-    //soit c'est la soustraction qui bloque et fait que l'erreur n'est plus négligeable soit c'est parce qu'on est en int et le rationnel a des long int du coup des données sautent
 }
+
+/// \brief Logarithm of a rational number by making the logarithm of the rational converted into a float 
+/// \return a rational or an error if the numerator is negative
 
 template<typename T>
 constexpr Rational<T> Rational<T>::log2(){
     T num = this->getNumerator();
     T den = this->getDenominator();
     if (num < 0){
-        std::cout << "No log for negative number ! Let you to 0." << std::endl;
+        std::cerr << "error: Rational::log: no log for negative number ! Let you to 0." << std::endl;
         return Rational(0,1);
     }
 
@@ -103,12 +127,18 @@ constexpr Rational<T> Rational<T>::log2(){
     // better : more accurate, less costly, easier
 }
 
+/// \brief Absolute of a rational number 
+/// \return a rational with a positive numerator
+
 
 template<typename T>
 constexpr Rational<T> Rational<T>::absolute(){
-    //assert(this->denominator==0 && "error: Rational::absolute numerator null");
+    assert(this->denominator==0 && "error: Rational::absolute denominator null");
     return Rational(std::abs(this->numerator), this->denominator);
 }
+
+/// \brief Integer part of a rational number 
+/// \return a integer 
 
 template<typename T>
 constexpr int Rational<T>::integerPart(){
@@ -136,20 +166,32 @@ constexpr int Rational<T>::integerPart(){
     return intPart;
 }
 
+/// \brief Cosinus of a rational number 
+/// \return a  
+
 template<typename T>
 constexpr Rational<T> Rational<T>::cosTaylor() {
     return Rational(1,1) - Rational(1,2)*(this->power(2)) + Rational(1,24)*(this->power(4));
 }
+
+/// \brief Sinus of a rational number 
+/// \return a  
 
 template<typename T>
 constexpr Rational<T> Rational<T>::sinTaylor() {
     return *this - Rational(1,6)*(this->power(3)) + Rational(1,120)*(this->power(5));
 }
 
+/// \brief Exponential of a rational number 
+/// \return a  
+
 template<typename T>
 constexpr Rational<T> Rational<T>::expTaylor() {
     return Rational(1,1) + (*this) + Rational(1,2)*(this->power(2)) + Rational(1,6)*(this->power(3)) + Rational(1,24)*(this->power(4)) + Rational(1,120)*(this->power(5));
 }
+
+/// \brief Cosinus of a rational number 
+/// \return a  
 
 template<typename T>
 constexpr Rational<T> Rational<T>::cosRatio() {
@@ -171,6 +213,9 @@ constexpr Rational<T> Rational<T>::cosRatio() {
     return cosRational;
 }
 
+/// \brief Sinus of a rational number 
+/// \return a  
+
 template<typename T>
 constexpr Rational<T> Rational<T>::sinRatio() {
     Rational sinRational(1,1);
@@ -191,12 +236,18 @@ constexpr Rational<T> Rational<T>::sinRatio() {
     return sinRational;
 }
 
+/// \brief Tangent of a rational number by making sin/cos
+/// \return a rational number
+
 template<typename T>
 constexpr Rational<T> Rational<T>::tanRatio(){
      Rational sin(this->sinRatio());
      Rational cos(this->cosRatio());
      return sin/cos;
 }
+
+/// \brief Exponential of a rational number 
+/// \return a rational 
 
 template<typename T>
 constexpr Rational<T> Rational<T>::expRatio() {
@@ -216,6 +267,9 @@ constexpr Rational<T> Rational<T>::expRatio() {
 
 /* ----- Manipulations ----- */
 
+/// \brief Make a rational number into an irreducible rational number
+/// \return a rational 
+
 template<typename T>
 constexpr Rational<T> Rational<T>::makeIrreductible(){
     //assert(this->denominator==0 && "error: Rational::makeIrreductible denominator null");
@@ -230,6 +284,11 @@ constexpr Rational<T> Rational<T>::makeIrreductible(){
 }
 
 /* ---------- Methods outside Rational class ---------- */
+
+/// \brief Make a rational number from a float and an iteration number
+/// \param x a constant float
+/// \param nbIter an unisgned integer
+/// \return a rational 
 
 template<typename T>
 constexpr Rational<T> floatToRatio(const float &x, unsigned int nbIter) {
@@ -259,6 +318,9 @@ constexpr Rational<T> floatToRatio(const float &x, unsigned int nbIter) {
     }
 }
 
+/// \brief Display a rational number
+/// \return return a rational in the form a/b or just a if b equals 1 or an error if a=b=0
+
 template<typename T>
 constexpr std::ostream& operator<< (std::ostream& stream, const Rational<T> &ratio) {
 	if(ratio.getNumerator() == 0 && ratio.getDenominator() == 0){
@@ -278,6 +340,11 @@ constexpr std::ostream& operator<< (std::ostream& stream, const Rational<T> &rat
 
 
 /* ---------------- Extern product for float---------------- */
+
+/// \brief Product of a float and a rational number
+/// \param f a constant float
+/// \param ratio a constant rational number
+/// \return a rational 
 
 template<typename T>
 constexpr Rational<T> extProductReal(const float &f, const Rational<T> &ratio) {
